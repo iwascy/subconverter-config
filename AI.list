@@ -42,18 +42,4 @@ DOMAIN-SUFFIX,stripe.com
 DOMAIN-SUFFIX,turn.livekit.cloud
 DOMAIN-KEYWORD,openai
 
-# NAME: Perplexity
-DOMAIN-SUFFIX,perplexity.ai
-
-# NAME: Gemini
-DOMAIN-SUFFIX,gemini.google.com
-
-# NAME: Claude
-DOMAIN-SUFFIX,anthropic.com
-DOMAIN-SUFFIX,claude.ai
-
-# NAME: Grok
-DOMAIN-SUFFIX,grok.com
-DOMAIN-SUFFIX,grok.ai
-DOMAIN-SUFFIX,x.ai
 
