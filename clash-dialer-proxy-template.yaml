@@ -1,21 +1,8 @@
-# Clash.Meta dialer-proxy chain template based on relay.ini naming rules.
-# Ensure your subscription nodes are renamed with these prefixes:
-# - TRANSIT-<index>-<name>
-# - EXIT-<index>-<name>
-# You can reuse the same subscription URL for both providers.
-#
-# How to fill subscriptions and map into groups:
-# - Only the proxy-providers section needs subscription URLs.
-# - Group membership is determined by provider + filter regex, not by extra URLs.
-# - If you have multiple subscriptions, add more providers and list them under `use:`.
-#   Example:
-#     EXTRA_PROVIDER:
-#       type: http
-#       url: "https://example.com/extra-sub"
-#       interval: 36000
-#       path: "./proxy_provider/extra.yaml"
-#       health-check: { enable: true, url: "https://www.gstatic.com/generate_204", interval: 600 }
-#   Then add EXTRA_PROVIDER to any group `use:` list that should include those nodes.
+mixed-port: 7890
+allow-lan: true
+mode: rule
+log-level: info
+external-controller: 127.0.0.1:9090
 
 proxy-providers:
   TRANSIT_PROVIDER:
