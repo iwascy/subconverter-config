@@ -58,12 +58,27 @@ proxy-groups:
   - name: RELAY-CHAIN
     type: select
     proxies:
+      - HK Fallback
+      - US Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - Self-Hosted
+      - AUTO
       - EXIT
 
   - name: TRANSIT
     type: select
-    use:
-      - TRANSIT_PROVIDER
+    proxies:
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
 
   - name: EXIT
     type: select
