@@ -1,0 +1,9 @@
+# Generated from https://github.com/v2fly/domain-list-community/tree/master/data/perplexity
+
+# Behavior: domain
+
+payload:
+- "+.perplexity.ai"
+- "+.perplexity.com"
+- "+.pplx.ai"
+- "pplx-res.cloudinary.com"
