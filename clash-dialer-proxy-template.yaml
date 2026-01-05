@@ -788,7 +788,319 @@ proxy-groups:
       - RELAY-CHAIN
       - DIRECT
 
+rule-providers:
+  Bilibili:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/bilibili.yaml"
+    path: ./ruleset/Bilibili.yaml
+    interval: 86400
+
+  Streaming_Netflix:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/netflix.yaml"
+    path: ./ruleset/netflix.yaml
+    interval: 86400
+
+  Streaming_Hulu:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/hulu.yaml"
+    path: ./ruleset/hulu.yaml
+    interval: 86400
+
+  Streaming_Disney:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/disney.yaml"
+    path: ./ruleset/disney.yaml
+    interval: 86400
+
+  Streaming_HBO:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/hbo.yaml"
+    path: ./ruleset/hbo.yaml
+    interval: 86400
+
+  Streaming_PrimeVideo:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/primevideo.yaml"
+    path: ./ruleset/primevideo.yaml
+    interval: 86400
+
+  Streaming_YouTube:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/youtube.yaml"
+    path: ./ruleset/youtube.yaml
+    interval: 86400
+
+  Streaming_Spotify:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/spotify.yaml"
+    path: ./ruleset/spotify.yaml
+    interval: 86400
+
+  OpenAI:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/OpenAI.yaml"
+    path: ./ruleset/OpenAi.yaml
+    interval: 86400
+
+  Claude:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Claude.yaml"
+    path: ./ruleset/ClaudeAI.yaml
+    interval: 86400
+
+  Gemini:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Gemini.yaml"
+    path: ./ruleset/Gemini.yaml
+    interval: 86400
+
+  Grok:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Grok.yaml"
+    path: ./ruleset/Grok.yaml
+    interval: 86400
+
+  Perplexity:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Perplexity.yaml"
+    path: ./ruleset/Perplexity.yaml
+    interval: 86400
+
+  PikPak:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/PikPak.yaml"
+    path: ./ruleset/PikPak.yaml
+    interval: 86400
+
+  GoogleFCM:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/googlefcm.yaml"
+    path: ./ruleset/googlefcm.yaml
+    interval: 86400
+
+  Google:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Google.yaml"
+    path: ./ruleset/Google.yaml
+    interval: 86400
+
+  Microsoft_CN:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/microsoft@cn.yaml"
+    path: ./ruleset/microsoft_cn.yaml
+    interval: 86400
+
+  Microsoft:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Microsoft.yaml"
+    path: ./ruleset/microsoft.yaml
+    interval: 86400
+
+  iCloud_CN:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/icloud@cn.yaml"
+    path: ./ruleset/icloud_cn.yaml
+    interval: 86400
+
+  iCloud:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/icloud.yaml"
+    path: ./ruleset/icloud.yaml
+    interval: 86400
+
+  Apple_CN:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/apple@cn.yaml"
+    path: ./ruleset/apple_cn.yaml
+    interval: 86400
+
+  Apple:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Apple.yaml"
+    path: ./ruleset/apple.yaml
+    interval: 86400
+
+  TelegramSG:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/TelegramSG.yaml"
+    path: ./ruleset/TelegramSG.yaml
+    interval: 86400
+
+  TelegramUS:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/TelegramUS.yaml"
+    path: ./ruleset/TelegramUS.yaml
+    interval: 86400
+
+  Telegram:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Telegram.yaml"
+    path: ./ruleset/Telegram.yaml
+    interval: 86400
+
+  Social_Media_CN:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-social-media-cn.yaml"
+    path: ./ruleset/social-media-cn.yaml
+    interval: 86400
+
+  Social_Communication:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-communication.yaml"
+    path: ./ruleset/communication.yaml
+    interval: 86400
+
+  Social_Media_NotCN:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-social-media-!cn.yaml"
+    path: ./ruleset/social-media-notcn.yaml
+    interval: 86400
+
+  Zoom:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/zoom.yaml"
+    path: ./ruleset/zoom.yaml
+    interval: 86400
+
+  Media_CN:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-media-cn.yaml"
+    path: ./ruleset/media-cn.yaml
+    interval: 86400
+
+  Media_Category:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-media.yaml"
+    path: ./ruleset/media.yaml
+    interval: 86400
+
+  Media_Forums:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-forums.yaml"
+    path: ./ruleset/forums.yaml
+    interval: 86400
+
+  GFW:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/gfw.yaml"
+    path: ./ruleset/GFW.yaml
+    interval: 86400
+
+  Personal:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Personal.list"
+    path: ./ruleset/Personal.list
+    interval: 86400
+
+  ChinaDomain:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
+    path: ./ruleset/ChinaDomain.list
+    interval: 86400
+
+  ChinaCompanyIp:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list"
+    path: ./ruleset/ChinaCompanyIp.list
+    interval: 86400
+
+  Download:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list"
+    path: ./ruleset/Download.list
+    interval: 86400
+
 # Adjust rules to your policy as needed.
-# This default sends all traffic through RELAY-CHAIN.
 rules:
-  - MATCH,RELAY-CHAIN
+  - RULE-SET,Bilibili,Bilibili
+  - RULE-SET,Streaming_Netflix,Streaming media
+  - RULE-SET,Streaming_Hulu,Streaming media
+  - RULE-SET,Streaming_Disney,Streaming media
+  - RULE-SET,Streaming_HBO,Streaming media
+  - RULE-SET,Streaming_PrimeVideo,Streaming media
+  - RULE-SET,Streaming_YouTube,Streaming media
+  - RULE-SET,Streaming_Spotify,Streaming media
+  - RULE-SET,OpenAI,OpenAI
+  - RULE-SET,Claude,Claude
+  - RULE-SET,Gemini,Gemini
+  - RULE-SET,Grok,Grok
+  - RULE-SET,Perplexity,Perplexity
+  - RULE-SET,PikPak,PikPak
+  - RULE-SET,GoogleFCM,Google FCM
+  - RULE-SET,Google,Google
+  - RULE-SET,Microsoft_CN,Microsoft CN
+  - RULE-SET,Microsoft,Microsoft
+  - RULE-SET,iCloud_CN,iCloud CN
+  - RULE-SET,iCloud,iCloud
+  - RULE-SET,Apple_CN,Apple CN
+  - RULE-SET,Apple,Apple
+  - RULE-SET,TelegramSG,TelegramSG
+  - RULE-SET,TelegramUS,TelegramUS
+  - RULE-SET,Telegram,Telegram
+  - RULE-SET,Social_Media_CN,Social Media CN
+  - RULE-SET,Social_Communication,Social Media
+  - RULE-SET,Social_Media_NotCN,Social Media
+  - RULE-SET,Zoom,Social Media
+  - RULE-SET,Media_CN,Media CN
+  - RULE-SET,Media_Category,Media
+  - RULE-SET,Media_Forums,Media
+  - RULE-SET,GFW,GFW
+  - RULE-SET,Personal,Personal
+  - IP-CIDR,10.12.0.0/24,Global Direct
+  - IP-CIDR,10.100.0.0/24,Global Direct
+  - IP-CIDR,10.100.1.0/24,Global Direct
+  - IP-CIDR,10.0.1.64/32,Global Direct
+  - IP-CIDR,112.74.102.253/32,Global Direct
+  - IP-CIDR,47.251.116.83/32,Global Direct
+  - IP-CIDR,172.16.0.0/12,Global Direct
+  - IP-CIDR,192.168.0.0/24,Global Direct
+  - IP-CIDR,192.168.12.244/32,Global Direct
+  - IP-CIDR,180.184.196.50/32,Global Direct
+  - GEOIP,LAN,Global Direct
+  - RULE-SET,ChinaDomain,CN Direct
+  - RULE-SET,ChinaCompanyIp,CN Direct
+  - RULE-SET,Download,CN Direct
+  - GEOIP,CN,CN Direct
+  - MATCH,Final
