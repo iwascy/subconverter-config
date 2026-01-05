@@ -1,0 +1,792 @@
+# Clash.Meta dialer-proxy chain template based on relay.ini naming rules.
+# Ensure your subscription nodes are renamed with these prefixes:
+# - TRANSIT-<index>-<name>
+# - EXIT-<index>-<name>
+# You can reuse the same subscription URL for both providers.
+#
+# How to fill subscriptions and map into groups:
+# - Only the proxy-providers section needs subscription URLs.
+# - Group membership is determined by provider + filter regex, not by extra URLs.
+# - If you have multiple subscriptions, add more providers and list them under `use:`.
+#   Example:
+#     EXTRA_PROVIDER:
+#       type: http
+#       url: "https://example.com/extra-sub"
+#       interval: 36000
+#       path: "./proxy_provider/extra.yaml"
+#       health-check: { enable: true, url: "https://www.gstatic.com/generate_204", interval: 600 }
+#   Then add EXTRA_PROVIDER to any group `use:` list that should include those nodes.
+
+proxy-providers:
+  TRANSIT_PROVIDER:
+    type: http
+    url: "https://example.com/sub"
+    interval: 36000
+    path: "./proxy_provider/transit.yaml"
+    filter: "(?i)^TRANSIT-"
+    health-check:
+      enable: true
+      url: "https://www.gstatic.com/generate_204"
+      interval: 600
+
+  EXIT_PROVIDER:
+    type: http
+    url: "https://example.com/sub"
+    interval: 36000
+    path: "./proxy_provider/exit.yaml"
+    filter: "(?i)^EXIT-"
+    # Apply chain dialing to every exit node in this provider.
+    dialer-proxy: "TRANSIT"
+    health-check:
+      enable: true
+      url: "https://www.gstatic.com/generate_204"
+      interval: 600
+
+proxy-groups:
+  # -- Base selector --
+  - name: SELECT
+    type: select
+    proxies:
+      - RELAY-CHAIN
+      - HK Fallback
+      - US Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - Self-Hosted
+      - AUTO
+      - DIRECT
+
+  # -- Self-Hosted (EXIT nodes) --
+  - name: Self-Hosted
+    type: select
+    use:
+      - EXIT_PROVIDER
+    filter: "(?i)(bwg|bagevm|self-hosted)"
+
+  # -- Chain core --
+  - name: RELAY-CHAIN
+    type: select
+    proxies:
+      - EXIT
+
+  - name: TRANSIT
+    type: select
+    use:
+      - TRANSIT_PROVIDER
+
+  - name: EXIT
+    type: select
+    use:
+      - EXIT_PROVIDER
+
+  # -- Transit region testing (TRANSIT nodes) --
+  - name: TRANSIT-HK
+    type: url-test
+    use:
+      - TRANSIT_PROVIDER
+    filter: "(?i)(香港|港|Hong Kong|HK)"
+    url: "http://cp.cloudflare.com/generate_204"
+    interval: 30
+
+  - name: TRANSIT-TW
+    type: url-test
+    use:
+      - TRANSIT_PROVIDER
+    filter: "(?i)(台湾|台|Taiwan|TW)"
+    url: "http://cp.cloudflare.com/generate_204"
+    interval: 30
+
+  - name: TRANSIT-SG
+    type: url-test
+    use:
+      - TRANSIT_PROVIDER
+    filter: "(?i)(新加坡|坡|Singapore|SG)"
+    url: "http://cp.cloudflare.com/generate_204"
+    interval: 30
+
+  - name: TRANSIT-JP
+    type: url-test
+    use:
+      - TRANSIT_PROVIDER
+    filter: "(?i)(日本|日|Japan|JP)"
+    url: "http://cp.cloudflare.com/generate_204"
+    interval: 30
+
+  - name: TRANSIT-US
+    type: url-test
+    use:
+      - TRANSIT_PROVIDER
+    filter: "(?i)(美国|美|United States|US)"
+    url: "http://cp.cloudflare.com/generate_204"
+    interval: 30
+
+  - name: TRANSIT-UK
+    type: url-test
+    use:
+      - TRANSIT_PROVIDER
+    filter: "(?i)(英国|英|United Kingdom|UK)"
+    url: "http://cp.cloudflare.com/generate_204"
+    interval: 30
+
+  # -- Exit region testing (EXIT nodes) --
+  - name: AUTO
+    type: url-test
+    use:
+      - EXIT_PROVIDER
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+
+  - name: HK
+    type: url-test
+    use:
+      - EXIT_PROVIDER
+    filter: "(?i)(香港|港|Hong Kong|HK)"
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+
+  - name: TW
+    type: url-test
+    use:
+      - EXIT_PROVIDER
+    filter: "(?i)(台湾|台|Taiwan|TW)"
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+
+  - name: SG
+    type: url-test
+    use:
+      - EXIT_PROVIDER
+    filter: "(?i)(新加坡|坡|Singapore|SG)"
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+
+  - name: JP
+    type: url-test
+    use:
+      - EXIT_PROVIDER
+    filter: "(?i)(日本|日|Japan|JP)"
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+
+  - name: US
+    type: url-test
+    use:
+      - EXIT_PROVIDER
+    filter: "(?i)(美国|美|United States|US)"
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+
+  - name: UK
+    type: url-test
+    use:
+      - EXIT_PROVIDER
+    filter: "(?i)(英国|英|United Kingdom|UK)"
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+
+  - name: HK Fallback
+    type: fallback
+    proxies:
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+
+  - name: US Fallback
+    type: fallback
+    proxies:
+      - US
+      - JP
+      - SG
+      - TW
+      - HK
+      - UK
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+
+  # -- Application policy groups (mirroring relay.ini) --
+  - name: Telegram
+    type: select
+    proxies:
+      - RELAY-CHAIN
+      - HK Fallback
+      - US Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - Self-Hosted
+      - AUTO
+      - DIRECT
+
+  - name: TelegramSG
+    type: select
+    proxies:
+      - SG
+      - RELAY-CHAIN
+      - HK Fallback
+      - US Fallback
+      - HK
+      - TW
+      - JP
+      - US
+      - UK
+      - Self-Hosted
+      - AUTO
+      - DIRECT
+
+  - name: TelegramUS
+    type: select
+    proxies:
+      - US
+      - RELAY-CHAIN
+      - HK Fallback
+      - US Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - UK
+      - Self-Hosted
+      - AUTO
+      - DIRECT
+
+  - name: OpenAI
+    type: select
+    proxies:
+      - SELECT
+      - US Fallback
+      - US
+      - JP
+      - SG
+      - TW
+      - HK
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Claude
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Gemini
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Grok
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Perplexity
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: PikPak
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Google FCM
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
+  - name: Google
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Microsoft CN
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
+  - name: Microsoft
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: iCloud CN
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
+  - name: iCloud
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Apple CN
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
+  - name: Apple
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Bilibili
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
+  - name: Streaming media
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Social Media CN
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
+  - name: Social Media
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Media CN
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
+  - name: Media
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Personal
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+  - name: Global Direct
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
+  - name: CN Direct
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
+  - name: GFW
+    type: select
+    proxies:
+      - SELECT
+      - DIRECT
+
+  - name: Final
+    type: select
+    proxies:
+      - SELECT
+      - HK Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - RELAY-CHAIN
+      - DIRECT
+
+# Adjust rules to your policy as needed.
+# This default sends all traffic through RELAY-CHAIN.
+rules:
+  - MATCH,RELAY-CHAIN
