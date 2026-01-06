@@ -96,6 +96,11 @@ proxy-groups:
     use:
       - EXIT_PROVIDER
 
+  - name: Youtube-Exit
+    type: select
+    use:
+      - EXIT_PROVIDER
+
   # -- Transit region testing (TRANSIT nodes) --
   - name: TRANSIT-HK
     type: url-test
@@ -218,6 +223,24 @@ proxy-groups:
     interval: 300
 
   # -- Application policy groups (mirroring relay.ini) --
+  - name: YouTube
+    type: select
+    proxies:
+      - Youtube-Exit
+      - RELAY-CHAIN
+      - HK Fallback
+      - US Fallback
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+      - DIRECT
+
   - name: Telegram
     type: select
     proxies:
@@ -721,6 +744,27 @@ proxy-groups:
       - RELAY-CHAIN
       - DIRECT
 
+  - name: Personal-Direct
+    type: select
+    proxies:
+      - DIRECT
+      - RELAY-CHAIN
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
+      - TRANSIT-HK
+      - TRANSIT-TW
+      - TRANSIT-SG
+      - TRANSIT-JP
+      - TRANSIT-US
+      - TRANSIT-UK
+      - Self-Hosted
+      - AUTO
+      - SELECT
+
   - name: Global Direct
     type: select
     proxies:
@@ -1031,6 +1075,14 @@ rule-providers:
     path: ./ruleset/Personal.list
     interval: 86400
 
+  Personal_Direct:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Personal-Direct.list"
+    path: ./ruleset/Personal-Direct.list
+    interval: 86400
+
   ChinaDomain:
     type: http
     behavior: classical
@@ -1063,7 +1115,7 @@ rules:
   - RULE-SET,Streaming_Disney,Streaming media
   - RULE-SET,Streaming_HBO,Streaming media
   - RULE-SET,Streaming_PrimeVideo,Streaming media
-  - RULE-SET,Streaming_YouTube,Streaming media
+  - RULE-SET,Streaming_YouTube,YouTube
   - RULE-SET,Streaming_Spotify,Streaming media
   - RULE-SET,OpenAI,OpenAI
   - RULE-SET,Claude,Claude
@@ -1090,6 +1142,7 @@ rules:
   - RULE-SET,Media_Category,Media
   - RULE-SET,Media_Forums,Media
   - RULE-SET,GFW,GFW
+  - RULE-SET,Personal_Direct,Personal-Direct
   - RULE-SET,Personal,Personal
   - IP-CIDR,10.12.0.0/24,Global Direct
   - IP-CIDR,10.100.0.0/24,Global Direct
