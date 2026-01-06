@@ -29,6 +29,17 @@ proxy-providers:
       url: "https://www.gstatic.com/generate_204"
       interval: 600
 
+  SELF_PROVIDER:
+    type: http
+    url: "https://example.com/sub"
+    interval: 36000
+    path: "./proxy_provider/self.yaml"
+    filter: "(?i)(bwg|bagevm|self-hosted)"
+    health-check:
+      enable: true
+      url: "https://www.gstatic.com/generate_204"
+      interval: 600
+
 proxy-groups:
   # -- Base selector --
   - name: SELECT
@@ -1015,8 +1026,8 @@ rule-providers:
 
   GFW:
     type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/gfw.yaml"
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
     path: ./ruleset/GFW.yaml
     interval: 86400
 
