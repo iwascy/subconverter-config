@@ -40,6 +40,16 @@ proxy-providers:
       url: "https://www.gstatic.com/generate_204"
       interval: 600
 
+  ALL_PROVIDER:
+    type: http
+    url: "https://example.com/sub"
+    interval: 36000
+    path: "./proxy_provider/all.yaml"
+    health-check:
+      enable: true
+      url: "https://www.gstatic.com/generate_204"
+      interval: 600
+
 proxy-groups:
   # -- Base selector --
   - name: SELECT
@@ -62,23 +72,13 @@ proxy-groups:
   - name: Self-Hosted
     type: select
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     filter: "(?i)(bwg|bagevm|self-hosted)"
 
   # -- Chain core --
   - name: RELAY-CHAIN
     type: select
     proxies:
-      - HK Fallback
-      - US Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - Self-Hosted
-      - AUTO
       - EXIT
 
   - name: TRANSIT
@@ -154,14 +154,14 @@ proxy-groups:
   - name: AUTO
     type: url-test
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     url: "http://www.gstatic.com/generate_204"
     interval: 300
 
   - name: HK
     type: url-test
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     filter: "(?i)(香港|港|Hong Kong|HK)"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
@@ -169,7 +169,7 @@ proxy-groups:
   - name: TW
     type: url-test
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     filter: "(?i)(台湾|台|Taiwan|TW)"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
@@ -177,7 +177,7 @@ proxy-groups:
   - name: SG
     type: url-test
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     filter: "(?i)(新加坡|坡|Singapore|SG)"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
@@ -185,7 +185,7 @@ proxy-groups:
   - name: JP
     type: url-test
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     filter: "(?i)(日本|日|Japan|JP)"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
@@ -193,7 +193,7 @@ proxy-groups:
   - name: US
     type: url-test
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     filter: "(?i)(美国|美|United States|US)"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
@@ -201,7 +201,7 @@ proxy-groups:
   - name: UK
     type: url-test
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     filter: "(?i)(英国|英|United Kingdom|UK)"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
@@ -209,7 +209,7 @@ proxy-groups:
   - name: HK Fallback
     type: fallback
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     filter: "(?i)(香港|港|Hong Kong|HK)"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
@@ -217,7 +217,7 @@ proxy-groups:
   - name: US Fallback
     type: fallback
     use:
-      - SELF_PROVIDER
+      - ALL_PROVIDER
     filter: "(?i)(美国|美|United States|US)"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
