@@ -292,6 +292,7 @@ proxy-groups:
   - name: OpenAI
     type: select
     proxies:
+      - Self-Hosted
       - SELECT
       - US Fallback
       - US
@@ -306,7 +307,6 @@ proxy-groups:
       - TRANSIT-JP
       - TRANSIT-US
       - TRANSIT-UK
-      - Self-Hosted
       - AUTO
       - RELAY-CHAIN
       - DIRECT
@@ -314,6 +314,7 @@ proxy-groups:
   - name: Claude
     type: select
     proxies:
+      - Self-Hosted
       - SELECT
       - HK Fallback
       - HK
@@ -328,7 +329,6 @@ proxy-groups:
       - TRANSIT-JP
       - TRANSIT-US
       - TRANSIT-UK
-      - Self-Hosted
       - AUTO
       - RELAY-CHAIN
       - DIRECT
@@ -336,6 +336,7 @@ proxy-groups:
   - name: Gemini
     type: select
     proxies:
+      - Self-Hosted
       - SELECT
       - HK Fallback
       - HK
@@ -350,7 +351,6 @@ proxy-groups:
       - TRANSIT-JP
       - TRANSIT-US
       - TRANSIT-UK
-      - Self-Hosted
       - AUTO
       - RELAY-CHAIN
       - DIRECT
@@ -358,6 +358,7 @@ proxy-groups:
   - name: Grok
     type: select
     proxies:
+      - Self-Hosted
       - SELECT
       - HK Fallback
       - HK
@@ -372,7 +373,6 @@ proxy-groups:
       - TRANSIT-JP
       - TRANSIT-US
       - TRANSIT-UK
-      - Self-Hosted
       - AUTO
       - RELAY-CHAIN
       - DIRECT
@@ -380,6 +380,7 @@ proxy-groups:
   - name: Perplexity
     type: select
     proxies:
+      - Self-Hosted
       - SELECT
       - HK Fallback
       - HK
@@ -394,7 +395,6 @@ proxy-groups:
       - TRANSIT-JP
       - TRANSIT-US
       - TRANSIT-UK
-      - Self-Hosted
       - AUTO
       - RELAY-CHAIN
       - DIRECT
@@ -445,6 +445,7 @@ proxy-groups:
   - name: Google
     type: select
     proxies:
+      - Self-Hosted
       - SELECT
       - HK Fallback
       - HK
@@ -459,7 +460,6 @@ proxy-groups:
       - TRANSIT-JP
       - TRANSIT-US
       - TRANSIT-UK
-      - Self-Hosted
       - AUTO
       - RELAY-CHAIN
       - DIRECT
