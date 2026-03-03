@@ -1,3 +1,15 @@
+# =============================================
+# Clash 配置模板 - 链式代理（dialer-proxy）
+# 功能：客户端 → TRANSIT(中转) → EXIT(落地) → 目标
+# =============================================
+# 使用说明：
+#   1. 将 <TRANSIT_SUB_URL> 替换为你的中转节点订阅链接
+#   2. 将 <EXIT_SUB_URL> 替换为你的落地节点订阅链接
+#   3. 将 <SELF_SUB_URL> 替换为你的自建节点订阅链接（可与 ALL 相同）
+#   4. 将 <ALL_SUB_URL> 替换为你的全部节点订阅链接
+#   5. 按需修改 rules 中的 IP-CIDR 直连规则
+# =============================================
+
 mixed-port: 7890
 allow-lan: true
 mode: rule
@@ -7,7 +19,8 @@ external-controller: 127.0.0.1:9090
 proxy-providers:
   TRANSIT_PROVIDER:
     type: http
-    url: "https://example.com/sub"
+    # ⚠️ 填入你的中转节点订阅链接
+    url: "<TRANSIT_SUB_URL>"
     interval: 36000
     path: "./proxy_provider/transit.yaml"
     filter: "(?i)^TRANSIT-"
@@ -18,11 +31,12 @@ proxy-providers:
 
   EXIT_PROVIDER:
     type: http
-    url: "https://example.com/sub"
+    # ⚠️ 填入你的落地节点订阅链接
+    url: "<EXIT_SUB_URL>"
     interval: 36000
     path: "./proxy_provider/exit.yaml"
     filter: "(?i)^EXIT-"
-    # Apply chain dialing to every exit node in this provider.
+    # 链式代理：EXIT 节点自动走 TRANSIT 中转
     dialer-proxy: "TRANSIT"
     health-check:
       enable: true
@@ -31,7 +45,8 @@ proxy-providers:
 
   SELF_PROVIDER:
     type: http
-    url: "https://example.com/sub"
+    # ⚠️ 填入你的自建节点订阅链接（可与 ALL 相同）
+    url: "<SELF_SUB_URL>"
     interval: 36000
     path: "./proxy_provider/self.yaml"
     filter: "(?i)(bwg|bagevm|self-hosted)"
@@ -40,9 +55,11 @@ proxy-providers:
       url: "https://www.gstatic.com/generate_204"
       interval: 600
 
+
   ALL_PROVIDER:
     type: http
-    url: "https://example.com/sub"
+    # ⚠️ 填入你的全部节点订阅链接
+    url: "<ALL_SUB_URL>"
     interval: 36000
     path: "./proxy_provider/all.yaml"
     health-check:
@@ -55,6 +72,7 @@ proxy-groups:
   - name: SELECT
     type: select
     proxies:
+      - Self-Hosted
       - RELAY-CHAIN
       - HK Fallback
       - US Fallback
@@ -64,7 +82,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - Self-Hosted
       - AUTO
       - DIRECT
 
@@ -1114,7 +1131,7 @@ rule-providers:
     path: ./ruleset/Download.list
     interval: 86400
 
-# Adjust rules to your policy as needed.
+# 规则（按需调整策略）
 rules:
   - RULE-SET,Bilibili,Bilibili
   - RULE-SET,Streaming_Netflix,Streaming media
@@ -1152,16 +1169,15 @@ rules:
   - RULE-SET,GFW,GFW
   - RULE-SET,Personal_Direct,Personal-Direct
   - RULE-SET,Personal,Personal
-  - IP-CIDR,10.12.0.0/24,Global Direct
-  - IP-CIDR,10.100.0.0/24,Global Direct
-  - IP-CIDR,10.100.1.0/24,Global Direct
-  - IP-CIDR,10.0.1.64/32,Global Direct
-  - IP-CIDR,112.74.102.253/32,Global Direct
-  - IP-CIDR,47.251.116.83/32,Global Direct
+  # ============= 内网与自定义网段直连（按需修改） =============
+  # - IP-CIDR,10.12.0.0/24,Global Direct
+  # - IP-CIDR,10.100.0.0/24,Global Direct
+  # - IP-CIDR,10.100.1.0/24,Global Direct
+  # - IP-CIDR,10.0.1.64/32,Global Direct
+  # - IP-CIDR,112.74.102.253/32,Global Direct
+  # - IP-CIDR,47.251.116.83/32,Global Direct
   - IP-CIDR,172.16.0.0/12,Global Direct
-  - IP-CIDR,192.168.0.0/24,Global Direct
-  - IP-CIDR,192.168.12.244/32,Global Direct
-  - IP-CIDR,180.184.196.50/32,Global Direct
+  - IP-CIDR,192.168.0.0/16,Global Direct
   - GEOIP,LAN,Global Direct
   - RULE-SET,ChinaDomain,CN Direct
   - RULE-SET,ChinaCompanyIp,CN Direct
