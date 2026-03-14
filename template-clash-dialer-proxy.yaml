@@ -72,7 +72,9 @@ proxy-groups:
   - name: SELECT
     type: select
     proxies:
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - US Fallback
@@ -86,11 +88,23 @@ proxy-groups:
       - DIRECT
 
   # -- Self-Hosted (EXIT nodes) --
-  - name: Self-Hosted
+  - name: Self-Hosted-US
     type: select
     use:
       - ALL_PROVIDER
-    filter: "(?i)(bwg|bagevm|self-hosted|oracle)"
+    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(US|美国)|(US|美国).*(bwg|bagevm|self-hosted|oracle))"
+
+  - name: Self-Hosted-SG
+    type: select
+    use:
+      - ALL_PROVIDER
+    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(SG|新加坡)|(SG|新加坡).*(bwg|bagevm|self-hosted|oracle))"
+
+  - name: Self-Hosted-HK
+    type: select
+    use:
+      - ALL_PROVIDER
+    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(HK|香港)|(HK|香港).*(bwg|bagevm|self-hosted|oracle))"
 
   # -- Chain core --
   - name: RELAY-CHAIN
@@ -244,7 +258,9 @@ proxy-groups:
     type: select
     proxies:
       - Youtube-Exit
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - US Fallback
@@ -262,7 +278,9 @@ proxy-groups:
     type: select
     proxies:
       - RELAY-CHAIN
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - HK Fallback
       - US Fallback
       - HK
@@ -278,7 +296,9 @@ proxy-groups:
     type: select
     proxies:
       - SG
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - US Fallback
@@ -294,7 +314,9 @@ proxy-groups:
     type: select
     proxies:
       - US
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - US Fallback
@@ -309,7 +331,9 @@ proxy-groups:
   - name: OpenAI
     type: select
     proxies:
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - SELECT
       - US Fallback
@@ -319,19 +343,15 @@ proxy-groups:
       - TW
       - HK
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
   - name: Claude
     type: select
     proxies:
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - SELECT
       - HK Fallback
@@ -341,19 +361,15 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
   - name: Gemini
     type: select
     proxies:
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - SELECT
       - HK Fallback
@@ -363,19 +379,15 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
   - name: Grok
     type: select
     proxies:
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - SELECT
       - HK Fallback
@@ -385,19 +397,15 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
   - name: Perplexity
     type: select
     proxies:
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - SELECT
       - HK Fallback
@@ -407,12 +415,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
@@ -420,7 +422,9 @@ proxy-groups:
     type: select
     proxies:
       - SELECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - HK
@@ -429,12 +433,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
@@ -442,7 +440,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -450,19 +450,15 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
   - name: Google
     type: select
     proxies:
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - SELECT
       - HK Fallback
@@ -472,12 +468,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
@@ -485,7 +475,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -493,12 +485,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
@@ -506,7 +492,9 @@ proxy-groups:
     type: select
     proxies:
       - SELECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - HK
@@ -515,12 +503,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
@@ -528,7 +510,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -536,12 +520,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
@@ -549,7 +527,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - SELECT
       - HK Fallback
@@ -559,19 +539,15 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
 
   - name: Apple CN
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -579,12 +555,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
@@ -592,7 +562,9 @@ proxy-groups:
     type: select
     proxies:
       - SELECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - HK
@@ -601,12 +573,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
@@ -614,7 +580,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -622,12 +590,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
@@ -635,7 +597,9 @@ proxy-groups:
     type: select
     proxies:
       - SELECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - HK
@@ -644,12 +608,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
@@ -657,7 +615,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -665,12 +625,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
@@ -678,7 +632,9 @@ proxy-groups:
     type: select
     proxies:
       - SELECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - HK
@@ -687,12 +643,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
@@ -700,7 +650,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -708,12 +660,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
@@ -721,7 +667,9 @@ proxy-groups:
     type: select
     proxies:
       - SELECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - HK
@@ -730,12 +678,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
@@ -743,7 +685,9 @@ proxy-groups:
     type: select
     proxies:
       - SELECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - HK
@@ -752,12 +696,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
@@ -765,7 +703,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -773,12 +713,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
@@ -786,7 +720,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -794,12 +730,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
@@ -807,7 +737,9 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK
       - TW
@@ -815,12 +747,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - SELECT
 
@@ -834,7 +760,9 @@ proxy-groups:
     type: select
     proxies:
       - SELECT
-      - Self-Hosted
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - RELAY-CHAIN
       - HK Fallback
       - HK
@@ -843,12 +771,6 @@ proxy-groups:
       - JP
       - US
       - UK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
       - AUTO
       - DIRECT
 
