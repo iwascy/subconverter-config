@@ -922,13 +922,6 @@ rule-providers:
     path: ./ruleset/apple_cn.yaml
     interval: 86400
 
-  Apple_Domain:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple_Domain.yaml"
-    path: ./ruleset/apple_domain.yaml
-    interval: 86400
-
   Apple:
     type: http
     behavior: classical
@@ -1021,6 +1014,21 @@ rule-providers:
     path: ./ruleset/Personal.list
     interval: 86400
 
+  Personal_Proxy:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Personal-Proxy.yaml"
+    path: ./ruleset/Personal-Proxy.yaml
+    interval: 86400
+
+  Personal_Proxy_List:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Personal-Proxy.list"
+    path: ./ruleset/Personal-Proxy.list
+    interval: 86400
+
   Personal_Direct_Rules:
     type: http
     behavior: classical
@@ -1083,7 +1091,6 @@ rules:
   - RULE-SET,iCloud_CN,iCloud CN
   - RULE-SET,iCloud,iCloud
   - RULE-SET,Apple_CN,Apple CN
-  - RULE-SET,Apple_Domain,Apple
   - RULE-SET,Apple,Apple
   - RULE-SET,TelegramSG,TelegramSG
   - RULE-SET,TelegramUS,TelegramUS
@@ -1096,6 +1103,8 @@ rules:
   - RULE-SET,Media_Category,Media
   - RULE-SET,Media_Forums,Media
   - RULE-SET,GFW,GFW
+  - RULE-SET,Personal_Proxy,Personal-Proxy
+  - RULE-SET,Personal_Proxy_List,Personal-Proxy
   - RULE-SET,Personal_Direct_Rules,Personal-Direct
   - RULE-SET,Personal_Direct,Personal-Direct
   - RULE-SET,Personal,Personal
