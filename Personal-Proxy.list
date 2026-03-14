@@ -1,0 +1,4 @@
+# 在此添加需要走代理的个人规则（Clash text 格式 / Loon 通用）
+# 示例:
+# DOMAIN-SUFFIX,example.com
+# IP-CIDR,1.2.3.4/32

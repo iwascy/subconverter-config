@@ -1,0 +1,6 @@
+payload:
+  # 在此添加需要走代理的个人规则（Clash YAML 格式）
+  # 示例:
+  # - DOMAIN-SUFFIX,example.com
+  # - IP-CIDR,1.2.3.4/32,no-resolve
+  - DOMAIN-SUFFIX,sub2api.cccy.fun
