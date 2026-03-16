@@ -115,6 +115,7 @@ proxy-groups:
   - name: TRANSIT
     type: select
     proxies:
+      - Self-Hosted-HK
       - TRANSIT-HK
       - TRANSIT-TW
       - TRANSIT-SG
