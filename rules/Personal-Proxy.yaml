@@ -4,3 +4,4 @@ payload:
   # - DOMAIN-SUFFIX,example.com
   # - IP-CIDR,1.2.3.4/32,no-resolve
   - DOMAIN-SUFFIX,sub2api.cccy.fun
+  - DOMAIN-SUFFIX,crs.cccy.fun
