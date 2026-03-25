@@ -1104,10 +1104,10 @@ rules:
   - RULE-SET,Media_Category,Media
   - RULE-SET,Media_Forums,Media
   - RULE-SET,GFW,GFW
-  - RULE-SET,Personal_Proxy,Personal-Proxy
-  - RULE-SET,Personal_Proxy_List,Personal-Proxy
   - RULE-SET,Personal_Direct_Rules,Personal-Direct
   - RULE-SET,Personal_Direct,Personal-Direct
+  - RULE-SET,Personal_Proxy,Personal-Proxy
+  - RULE-SET,Personal_Proxy_List,Personal-Proxy
   - RULE-SET,Personal,Personal
   # ============= 内网与自定义网段直连（按需修改） =============
   # - IP-CIDR,10.12.0.0/24,Global Direct

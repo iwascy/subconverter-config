@@ -2,3 +2,5 @@ payload:
   - IP-CIDR,161.118.237.224/32,no-resolve
   - IP-CIDR,95.181.189.25/32,no-resolve
   - IP-CIDR,38.38.250.75/32,no-resolve
+  - DOMAIN-SUFFIX,sub2api-proxy.cccy.fun
+  - DOMAIN-SUFFIX,crs-proxy.cccy.fun
