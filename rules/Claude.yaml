@@ -3,9 +3,13 @@
 # REPO: https://github.com/blackmatrix7/ios_rule_script
 # UPDATED: 2025-06-06 09:20:01
 # DOMAIN: 1
-# DOMAIN-SUFFIX: 2
-# TOTAL: 3
+# DOMAIN-SUFFIX: 5
+# TOTAL: 6
 payload:
   - DOMAIN,cdn.usefathom.com
   - DOMAIN-SUFFIX,anthropic.com
   - DOMAIN-SUFFIX,claude.ai
+  - DOMAIN-SUFFIX,claude.com
+  - DOMAIN-SUFFIX,claude-content.com
+  - DOMAIN-SUFFIX,claudeusercontent.com
+
