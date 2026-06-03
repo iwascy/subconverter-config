@@ -1071,6 +1071,7 @@ rule-providers:
 
 # 规则（按需调整策略）
 rules:
+  - DOMAIN-SUFFIX,sub2api-cn.cccy.fun,Personal-Direct
   - RULE-SET,Bilibili,Bilibili
   - RULE-SET,Streaming_Netflix,Streaming media
   - RULE-SET,Streaming_Hulu,Streaming media
