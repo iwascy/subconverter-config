@@ -10,7 +10,7 @@ external-controller: 127.0.0.1:9090
 proxy-providers:
   SELF_PROVIDER:
     type: http
-    url: "<SELF_SUB_URL>"
+    url: "<SELF_SUB_URL>?target=ClashMeta"
     interval: 36000
     path: "./proxy_provider/self.yaml"
     filter: "(?i)(bwg|bagevm|self-hosted|oracle)"
@@ -21,7 +21,7 @@ proxy-providers:
 
   ALL_PROVIDER:
     type: http
-    url: "<ALL_SUB_URL>"
+    url: "<ALL_SUB_URL>?target=ClashMeta"
     interval: 36000
     path: "./proxy_provider/all.yaml"
     health-check:
@@ -44,7 +44,7 @@ proxy-groups:
     type: select
     use:
       - SELF_PROVIDER
-    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(US|美国)|(US|美国).*(bwg|bagevm|self-hosted|oracle))"
+    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(US|美国|洛杉矶)|(US|美国|洛杉矶).*(bwg|bagevm|self-hosted|oracle))"
 
   - name: Self-Hosted-SG
     type: select
