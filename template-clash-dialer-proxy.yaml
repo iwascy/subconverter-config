@@ -8,29 +8,6 @@ log-level: info
 external-controller: 127.0.0.1:9090
 
 proxy-providers:
-  TRANSIT_PROVIDER:
-    type: http
-    url: "<TRANSIT_SUB_URL>"
-    interval: 36000
-    path: "./proxy_provider/transit.yaml"
-    filter: "(?i)^TRANSIT-"
-    health-check:
-      enable: true
-      url: "https://www.gstatic.com/generate_204"
-      interval: 600
-
-  EXIT_PROVIDER:
-    type: http
-    url: "<EXIT_SUB_URL>"
-    interval: 36000
-    path: "./proxy_provider/exit.yaml"
-    filter: "(?i)^EXIT-"
-    dialer-proxy: "TRANSIT"
-    health-check:
-      enable: true
-      url: "https://www.gstatic.com/generate_204"
-      interval: 600
-
   SELF_PROVIDER:
     type: http
     url: "<SELF_SUB_URL>"
@@ -59,16 +36,6 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - US Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
       - DIRECT
     use:
       - ALL_PROVIDER
@@ -91,153 +58,11 @@ proxy-groups:
       - SELF_PROVIDER
     filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(HK|香港)|(HK|香港).*(bwg|bagevm|self-hosted|oracle))"
 
-  - name: RELAY-CHAIN
+  - name: YouTube
     type: select
     proxies:
-      - EXIT
-
-  - name: TRANSIT
-    type: select
-    proxies:
-      - Self-Hosted-HK
-      - TRANSIT-HK
-      - TRANSIT-TW
-      - TRANSIT-SG
-      - TRANSIT-JP
-      - TRANSIT-US
-      - TRANSIT-UK
-
-  - name: EXIT
-    type: select
-    use:
-      - EXIT_PROVIDER
-
-  - name: TRANSIT-HK
-    type: url-test
-    use:
-      - TRANSIT_PROVIDER
-    filter: "(?i)(香港|港|Hong Kong|HK)"
-    url: "http://cp.cloudflare.com/generate_204"
-    interval: 30
-
-  - name: TRANSIT-TW
-    type: url-test
-    use:
-      - TRANSIT_PROVIDER
-    filter: "(?i)(台湾|台|Taiwan|TW)"
-    url: "http://cp.cloudflare.com/generate_204"
-    interval: 30
-
-  - name: TRANSIT-SG
-    type: url-test
-    use:
-      - TRANSIT_PROVIDER
-    filter: "(?i)(新加坡|坡|Singapore|SG)"
-    url: "http://cp.cloudflare.com/generate_204"
-    interval: 30
-
-  - name: TRANSIT-JP
-    type: url-test
-    use:
-      - TRANSIT_PROVIDER
-    filter: "(?i)(日本|日|Japan|JP)"
-    url: "http://cp.cloudflare.com/generate_204"
-    interval: 30
-
-  - name: TRANSIT-US
-    type: url-test
-    use:
-      - TRANSIT_PROVIDER
-    filter: "(?i)(美国|美|United States|US)"
-    url: "http://cp.cloudflare.com/generate_204"
-    interval: 30
-
-  - name: TRANSIT-UK
-    type: url-test
-    use:
-      - TRANSIT_PROVIDER
-    filter: "(?i)(英国|英|United Kingdom|UK)"
-    url: "http://cp.cloudflare.com/generate_204"
-    interval: 30
-
-  - name: AUTO
-    type: url-test
-    use:
-      - ALL_PROVIDER
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-
-  - name: HK
-    type: url-test
-    use:
-      - ALL_PROVIDER
-    filter: "(?i)(香港|港|Hong Kong|HK)"
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-
-  - name: TW
-    type: url-test
-    use:
-      - ALL_PROVIDER
-    filter: "(?i)(台湾|台|Taiwan|TW)"
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-
-  - name: SG
-    type: url-test
-    use:
-      - ALL_PROVIDER
-    filter: "(?i)(新加坡|坡|Singapore|SG)"
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-
-  - name: JP
-    type: url-test
-    use:
-      - ALL_PROVIDER
-    filter: "(?i)(日本|日|Japan|JP)"
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-
-  - name: US
-    type: url-test
-    use:
-      - ALL_PROVIDER
-    filter: "(?i)(美国|美|United States|US)"
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-
-  - name: UK
-    type: url-test
-    use:
-      - ALL_PROVIDER
-    filter: "(?i)(英国|英|United Kingdom|UK)"
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-
-  - name: HK Fallback
-    type: fallback
-    proxies:
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-
-  - name: US Fallback
-    type: fallback
-    proxies:
-      - US
-      - JP
-      - SG
-      - TW
-      - HK
-      - UK
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
+      - SELECT
+      - DIRECT
 
   - name: Streaming media
     type: select
@@ -576,12 +401,12 @@ rule-providers:
 rules:
   - RULE-SET,IQIYI,CN Direct
   - RULE-SET,Bilibili,CN Direct
+  - RULE-SET,Streaming_YouTube,YouTube
   - RULE-SET,Streaming_Netflix,Streaming media
   - RULE-SET,Streaming_Hulu,Streaming media
   - RULE-SET,Streaming_Disney,Streaming media
   - RULE-SET,Streaming_HBO,Streaming media
   - RULE-SET,Streaming_PrimeVideo,Streaming media
-  - RULE-SET,Streaming_YouTube,Streaming media
   - RULE-SET,Streaming_Spotify,Streaming media
   - RULE-SET,Cryptocurrency,Final
   - RULE-SET,PayPal,Final
