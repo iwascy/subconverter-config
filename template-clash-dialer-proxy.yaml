@@ -321,18 +321,16 @@ rule-providers:
 
   Grok:
     type: http
-    behavior: classical
-    format: text
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Grok.list"
-    path: ./ruleset/Grok.list
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/xai.yaml"
+    path: ./ruleset/xai.yaml
     interval: 86400
 
   Perplexity:
     type: http
-    behavior: classical
-    format: text
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Perplexity.list"
-    path: ./ruleset/Perplexity.list
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/perplexity.yaml"
+    path: ./ruleset/perplexity.yaml
     interval: 86400
 
   Games_CN:
@@ -408,21 +406,21 @@ rule-providers:
   TelegramSG:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/TelegramSG.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TelegramSG/TelegramSG.yaml"
     path: ./ruleset/TelegramSG.yaml
     interval: 86400
 
   TelegramUS:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/TelegramUS.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TelegramUS/TelegramUS.yaml"
     path: ./ruleset/TelegramUS.yaml
     interval: 86400
 
   Telegram:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Telegram.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
     path: ./ruleset/Telegram.yaml
     interval: 86400
 
