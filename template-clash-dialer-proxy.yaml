@@ -67,6 +67,33 @@ proxy-groups:
       - SELECT
       - DIRECT
 
+  - name: Telegram
+    type: select
+    proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - SELECT
+      - DIRECT
+
+  - name: TelegramSG
+    type: select
+    proxies:
+      - Self-Hosted-SG
+      - Self-Hosted-US
+      - Self-Hosted-HK
+      - SELECT
+      - DIRECT
+
+  - name: TelegramUS
+    type: select
+    proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - SELECT
+      - DIRECT
+
   - name: Streaming media
     type: select
     proxies:
@@ -147,6 +174,24 @@ proxy-groups:
       - Self-Hosted-HK
       - SELECT
       - DIRECT
+
+  - name: Personal
+    type: select
+    proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - SELECT
+      - DIRECT
+
+  - name: Personal-Direct
+    type: select
+    proxies:
+      - DIRECT
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - SELECT
 
   - name: Global Direct
     type: select
@@ -360,6 +405,27 @@ rule-providers:
     path: ./ruleset/apple.yaml
     interval: 86400
 
+  TelegramSG:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/TelegramSG.yaml"
+    path: ./ruleset/TelegramSG.yaml
+    interval: 86400
+
+  TelegramUS:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/TelegramUS.yaml"
+    path: ./ruleset/TelegramUS.yaml
+    interval: 86400
+
+  Telegram:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Telegram.yaml"
+    path: ./ruleset/Telegram.yaml
+    interval: 86400
+
   Social_Media_CN:
     type: http
     behavior: domain
@@ -431,6 +497,21 @@ rule-providers:
     path: ./ruleset/Personal.list
     interval: 86400
 
+  Personal_Direct_Rules:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Personal-Direct.yaml"
+    path: ./ruleset/Personal-Direct-Rules.yaml
+    interval: 86400
+
+  Personal_Direct:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Personal-Direct.list"
+    path: ./ruleset/Personal-Direct.list
+    interval: 86400
+
 rules:
   - RULE-SET,IQIYI,CN Direct
   - RULE-SET,Bilibili,CN Direct
@@ -459,6 +540,9 @@ rules:
   - RULE-SET,iCloud,Final
   - RULE-SET,Apple_CN,CN Direct
   - RULE-SET,Apple,Final
+  - RULE-SET,TelegramSG,TelegramSG
+  - RULE-SET,TelegramUS,TelegramUS
+  - RULE-SET,Telegram,Telegram
   - RULE-SET,Social_Media_CN,CN Direct
   - RULE-SET,Social_Communication,Social Media
   - RULE-SET,Social_Media_NotCN,Social Media
@@ -468,7 +552,9 @@ rules:
   - RULE-SET,Media_Forums,Media
   - RULE-SET,Scholar_CN,CN Direct
   - RULE-SET,Scholar,Scholar
-  - RULE-SET,Personal,Final
+  - RULE-SET,Personal_Direct_Rules,Personal-Direct
+  - RULE-SET,Personal_Direct,Personal-Direct
+  - RULE-SET,Personal,Personal
   - GEOIP,LAN,Global Direct
   - GEOIP,CN,CN Direct
   - MATCH,Final
