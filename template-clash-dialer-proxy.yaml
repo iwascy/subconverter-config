@@ -1,14 +1,5 @@
-# =============================================
-# Clash 配置模板 - 链式代理（dialer-proxy）
-# 功能：客户端 → TRANSIT(中转) → EXIT(落地) → 目标
-# =============================================
-# 使用说明：
-#   1. 将 <TRANSIT_SUB_URL> 替换为你的中转节点订阅链接
-#   2. 将 <EXIT_SUB_URL> 替换为你的落地节点订阅链接
-#   3. 将 <SELF_SUB_URL> 替换为你的自建节点订阅链接（可与 ALL 相同）
-#   4. 将 <ALL_SUB_URL> 替换为你的全部节点订阅链接
-#   5. 按需修改 rules 中的 IP-CIDR 直连规则
-# =============================================
+# Local Clash config generated from macau.ini group/rule layout.
+# Fill the subscription placeholders before using.
 
 mixed-port: 7890
 allow-lan: true
@@ -19,7 +10,6 @@ external-controller: 127.0.0.1:9090
 proxy-providers:
   TRANSIT_PROVIDER:
     type: http
-    # ⚠️ 填入你的中转节点订阅链接
     url: "<TRANSIT_SUB_URL>"
     interval: 36000
     path: "./proxy_provider/transit.yaml"
@@ -31,12 +21,10 @@ proxy-providers:
 
   EXIT_PROVIDER:
     type: http
-    # ⚠️ 填入你的落地节点订阅链接
     url: "<EXIT_SUB_URL>"
     interval: 36000
     path: "./proxy_provider/exit.yaml"
     filter: "(?i)^EXIT-"
-    # 链式代理：EXIT 节点自动走 TRANSIT 中转
     dialer-proxy: "TRANSIT"
     health-check:
       enable: true
@@ -45,7 +33,6 @@ proxy-providers:
 
   SELF_PROVIDER:
     type: http
-    # ⚠️ 填入你的自建节点订阅链接（可与 ALL 相同）
     url: "<SELF_SUB_URL>"
     interval: 36000
     path: "./proxy_provider/self.yaml"
@@ -55,10 +42,8 @@ proxy-providers:
       url: "https://www.gstatic.com/generate_204"
       interval: 600
 
-
   ALL_PROVIDER:
     type: http
-    # ⚠️ 填入你的全部节点订阅链接
     url: "<ALL_SUB_URL>"
     interval: 36000
     path: "./proxy_provider/all.yaml"
@@ -68,7 +53,6 @@ proxy-providers:
       interval: 600
 
 proxy-groups:
-  # -- Base selector --
   - name: SELECT
     type: select
     proxies:
@@ -86,27 +70,27 @@ proxy-groups:
       - UK
       - AUTO
       - DIRECT
+    use:
+      - ALL_PROVIDER
 
-  # -- Self-Hosted (EXIT nodes) --
   - name: Self-Hosted-US
     type: select
     use:
-      - ALL_PROVIDER
+      - SELF_PROVIDER
     filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(US|美国)|(US|美国).*(bwg|bagevm|self-hosted|oracle))"
 
   - name: Self-Hosted-SG
     type: select
     use:
-      - ALL_PROVIDER
+      - SELF_PROVIDER
     filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(SG|新加坡)|(SG|新加坡).*(bwg|bagevm|self-hosted|oracle))"
 
   - name: Self-Hosted-HK
     type: select
     use:
-      - ALL_PROVIDER
+      - SELF_PROVIDER
     filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(HK|香港)|(HK|香港).*(bwg|bagevm|self-hosted|oracle))"
 
-  # -- Chain core --
   - name: RELAY-CHAIN
     type: select
     proxies:
@@ -128,12 +112,6 @@ proxy-groups:
     use:
       - EXIT_PROVIDER
 
-  - name: Youtube-Exit
-    type: select
-    use:
-      - EXIT_PROVIDER
-
-  # -- Transit region testing (TRANSIT nodes) --
   - name: TRANSIT-HK
     type: url-test
     use:
@@ -182,7 +160,6 @@ proxy-groups:
     url: "http://cp.cloudflare.com/generate_204"
     interval: 30
 
-  # -- Exit region testing (EXIT nodes) --
   - name: AUTO
     type: url-test
     use:
@@ -240,547 +217,112 @@ proxy-groups:
 
   - name: HK Fallback
     type: fallback
-    use:
-      - ALL_PROVIDER
-    filter: "(?i)(香港|港|Hong Kong|HK)"
+    proxies:
+      - HK
+      - TW
+      - SG
+      - JP
+      - US
+      - UK
     url: "http://www.gstatic.com/generate_204"
     interval: 300
 
   - name: US Fallback
     type: fallback
-    use:
-      - ALL_PROVIDER
-    filter: "(?i)(美国|美|United States|US)"
+    proxies:
+      - US
+      - JP
+      - SG
+      - TW
+      - HK
+      - UK
     url: "http://www.gstatic.com/generate_204"
     interval: 300
-
-  # -- Application policy groups (mirroring relay.ini) --
-  - name: YouTube
-    type: select
-    proxies:
-      - Youtube-Exit
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - US Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - SELECT
-      - DIRECT
-
-  - name: Telegram
-    type: select
-    proxies:
-      - RELAY-CHAIN
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - HK Fallback
-      - US Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: TelegramSG
-    type: select
-    proxies:
-      - SG
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - US Fallback
-      - HK
-      - TW
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: TelegramUS
-    type: select
-    proxies:
-      - US
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - US Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: OpenAI
-    type: select
-    proxies:
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - SELECT
-      - US Fallback
-      - US
-      - JP
-      - SG
-      - TW
-      - HK
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: Claude
-    type: select
-    proxies:
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - SELECT
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: Gemini
-    type: select
-    proxies:
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - SELECT
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: Grok
-    type: select
-    proxies:
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - SELECT
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: Perplexity
-    type: select
-    proxies:
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - SELECT
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: PikPak
-    type: select
-    proxies:
-      - SELECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: Google FCM
-    type: select
-    proxies:
-      - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - SELECT
-
-  - name: Google
-    type: select
-    proxies:
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - SELECT
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: Microsoft CN
-    type: select
-    proxies:
-      - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - SELECT
-
-  - name: Microsoft
-    type: select
-    proxies:
-      - SELECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: iCloud CN
-    type: select
-    proxies:
-      - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - SELECT
-
-  - name: iCloud
-    type: select
-    proxies:
-      - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - SELECT
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-
-  - name: Apple CN
-    type: select
-    proxies:
-      - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - SELECT
-
-  - name: Apple
-    type: select
-    proxies:
-      - SELECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - DIRECT
-
-  - name: Bilibili
-    type: select
-    proxies:
-      - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - SELECT
 
   - name: Streaming media
     type: select
     proxies:
       - SELECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
       - DIRECT
 
-  - name: Social Media CN
+  - name: AI
     type: select
     proxies:
-      - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
       - SELECT
+      - DIRECT
+
+  - name: Claude
+    type: select
+    proxies:
+      - SELECT
+      - DIRECT
+
+  - name: Gemini
+    type: select
+    proxies:
+      - SELECT
+      - DIRECT
+
+  - name: Grok
+    type: select
+    proxies:
+      - SELECT
+      - DIRECT
+
+  - name: Perplexity
+    type: select
+    proxies:
+      - SELECT
+      - DIRECT
 
   - name: Social Media
     type: select
     proxies:
       - SELECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
       - DIRECT
-
-  - name: Media CN
-    type: select
-    proxies:
-      - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - SELECT
 
   - name: Media
     type: select
     proxies:
       - SELECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
       - DIRECT
 
-  - name: Personal
+  - name: Scholar
     type: select
     proxies:
       - SELECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
       - DIRECT
-
-  - name: Personal-Direct
-    type: select
-    proxies:
-      - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - SELECT
 
   - name: Global Direct
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
-      - SELECT
 
   - name: CN Direct
     type: select
     proxies:
       - DIRECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
       - SELECT
-
-  - name: GFW
-    type: select
-    proxies:
-      - SELECT
-      - DIRECT
 
   - name: Final
     type: select
     proxies:
       - SELECT
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - RELAY-CHAIN
-      - HK Fallback
-      - HK
-      - TW
-      - SG
-      - JP
-      - US
-      - UK
-      - AUTO
       - DIRECT
 
 rule-providers:
+  IQIYI:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/iqiyi.yaml"
+    path: ./ruleset/iqiyi.yaml
+    interval: 86400
+
   Bilibili:
     type: http
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/bilibili.yaml"
-    path: ./ruleset/Bilibili.yaml
+    path: ./ruleset/bilibili.yaml
     interval: 86400
 
   Streaming_Netflix:
@@ -832,46 +374,76 @@ rule-providers:
     path: ./ruleset/spotify.yaml
     interval: 86400
 
+  Cryptocurrency:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-cryptocurrency.yaml"
+    path: ./ruleset/cryptocurrency.yaml
+    interval: 86400
+
+  PayPal:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/paypal.yaml"
+    path: ./ruleset/paypal.yaml
+    interval: 86400
+
+  Stripe:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/stripe.yaml"
+    path: ./ruleset/stripe.yaml
+    interval: 86400
+
   OpenAI:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/OpenAI.yaml"
-    path: ./ruleset/OpenAi.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
+    path: ./ruleset/OpenAI.yaml
     interval: 86400
 
   Claude:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Claude.yaml"
-    path: ./ruleset/ClaudeAI.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
+    path: ./ruleset/Claude.yaml
     interval: 86400
 
   Gemini:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Gemini.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml"
     path: ./ruleset/Gemini.yaml
     interval: 86400
 
   Grok:
     type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Grok.yaml"
-    path: ./ruleset/Grok.yaml
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Grok.list"
+    path: ./ruleset/Grok.list
     interval: 86400
 
   Perplexity:
     type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Perplexity.yaml"
-    path: ./ruleset/Perplexity.yaml
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Perplexity.list"
+    path: ./ruleset/Perplexity.list
     interval: 86400
 
-  PikPak:
+  Games_CN:
     type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/PikPak.yaml"
-    path: ./ruleset/PikPak.yaml
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-games@cn.yaml"
+    path: ./ruleset/games-cn.yaml
+    interval: 86400
+
+  Games:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-games.yaml"
+    path: ./ruleset/games.yaml
     interval: 86400
 
   GoogleFCM:
@@ -881,24 +453,24 @@ rule-providers:
     path: ./ruleset/googlefcm.yaml
     interval: 86400
 
-  Google:
+  OneDrive:
     type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Google.yaml"
-    path: ./ruleset/Google.yaml
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/onedrive.yaml"
+    path: ./ruleset/onedrive.yaml
     interval: 86400
 
   Microsoft_CN:
     type: http
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/microsoft@cn.yaml"
-    path: ./ruleset/microsoft_cn.yaml
+    path: ./ruleset/microsoft-cn.yaml
     interval: 86400
 
   Microsoft:
     type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Microsoft.yaml"
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/microsoft.yaml"
     path: ./ruleset/microsoft.yaml
     interval: 86400
 
@@ -906,7 +478,7 @@ rule-providers:
     type: http
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/icloud@cn.yaml"
-    path: ./ruleset/icloud_cn.yaml
+    path: ./ruleset/icloud-cn.yaml
     interval: 86400
 
   iCloud:
@@ -920,35 +492,14 @@ rule-providers:
     type: http
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/apple@cn.yaml"
-    path: ./ruleset/apple_cn.yaml
+    path: ./ruleset/apple-cn.yaml
     interval: 86400
 
   Apple:
     type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Apple.yaml"
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/apple.yaml"
     path: ./ruleset/apple.yaml
-    interval: 86400
-
-  TelegramSG:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/TelegramSG.yaml"
-    path: ./ruleset/TelegramSG.yaml
-    interval: 86400
-
-  TelegramUS:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/TelegramUS.yaml"
-    path: ./ruleset/TelegramUS.yaml
-    interval: 86400
-
-  Telegram:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Telegram.yaml"
-    path: ./ruleset/Telegram.yaml
     interval: 86400
 
   Social_Media_CN:
@@ -968,7 +519,7 @@ rule-providers:
   Social_Media_NotCN:
     type: http
     behavior: domain
-    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-social-media-!cn.yaml"
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-social-media-%21cn.yaml"
     path: ./ruleset/social-media-notcn.yaml
     interval: 86400
 
@@ -1000,11 +551,18 @@ rule-providers:
     path: ./ruleset/forums.yaml
     interval: 86400
 
-  GFW:
+  Scholar_CN:
     type: http
     behavior: domain
-    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
-    path: ./ruleset/GFW.yaml
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-scholar-cn.yaml"
+    path: ./ruleset/scholar-cn.yaml
+    interval: 86400
+
+  Scholar:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-scholar-%21cn.yaml"
+    path: ./ruleset/scholar-notcn.yaml
     interval: 86400
 
   Personal:
@@ -1015,112 +573,44 @@ rule-providers:
     path: ./ruleset/Personal.list
     interval: 86400
 
-  Personal_Proxy:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Personal-Proxy.yaml"
-    path: ./ruleset/Personal-Proxy.yaml
-    interval: 86400
-
-  Personal_Proxy_List:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Personal-Proxy.list"
-    path: ./ruleset/Personal-Proxy.list
-    interval: 86400
-
-  Personal_Direct_Rules:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Personal-Direct.yaml"
-    path: ./ruleset/Personal-Direct-Rules.yaml
-    interval: 86400
-
-  Personal_Direct:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Personal-Direct.list"
-    path: ./ruleset/Personal-Direct.list
-    interval: 86400
-
-  ChinaDomain:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
-    path: ./ruleset/ChinaDomain.list
-    interval: 86400
-
-  ChinaCompanyIp:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list"
-    path: ./ruleset/ChinaCompanyIp.list
-    interval: 86400
-
-  Download:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list"
-    path: ./ruleset/Download.list
-    interval: 86400
-
-# 规则（按需调整策略）
 rules:
-  - RULE-SET,Bilibili,Bilibili
+  - RULE-SET,IQIYI,CN Direct
+  - RULE-SET,Bilibili,CN Direct
   - RULE-SET,Streaming_Netflix,Streaming media
   - RULE-SET,Streaming_Hulu,Streaming media
   - RULE-SET,Streaming_Disney,Streaming media
   - RULE-SET,Streaming_HBO,Streaming media
   - RULE-SET,Streaming_PrimeVideo,Streaming media
-  - RULE-SET,Streaming_YouTube,YouTube
+  - RULE-SET,Streaming_YouTube,Streaming media
   - RULE-SET,Streaming_Spotify,Streaming media
-  - RULE-SET,OpenAI,OpenAI
+  - RULE-SET,Cryptocurrency,Final
+  - RULE-SET,PayPal,Final
+  - RULE-SET,Stripe,Final
+  - RULE-SET,OpenAI,AI
   - RULE-SET,Claude,Claude
   - RULE-SET,Gemini,Gemini
   - RULE-SET,Grok,Grok
   - RULE-SET,Perplexity,Perplexity
-  - RULE-SET,PikPak,PikPak
-  - RULE-SET,GoogleFCM,Google FCM
-  - RULE-SET,Google,Google
-  - RULE-SET,Microsoft_CN,Microsoft CN
-  - RULE-SET,Microsoft,Microsoft
-  - RULE-SET,iCloud_CN,iCloud CN
-  - RULE-SET,iCloud,iCloud
-  - RULE-SET,Apple_CN,Apple CN
-  - RULE-SET,Apple,Apple
-  - RULE-SET,TelegramSG,TelegramSG
-  - RULE-SET,TelegramUS,TelegramUS
-  - RULE-SET,Telegram,Telegram
-  - RULE-SET,Social_Media_CN,Social Media CN
+  - RULE-SET,Games_CN,CN Direct
+  - RULE-SET,Games,Final
+  - RULE-SET,GoogleFCM,Final
+  - RULE-SET,OneDrive,Final
+  - RULE-SET,Microsoft_CN,CN Direct
+  - RULE-SET,Microsoft,Final
+  - RULE-SET,iCloud_CN,CN Direct
+  - RULE-SET,iCloud,Final
+  - RULE-SET,Apple_CN,CN Direct
+  - RULE-SET,Apple,Final
+  - RULE-SET,Social_Media_CN,CN Direct
   - RULE-SET,Social_Communication,Social Media
   - RULE-SET,Social_Media_NotCN,Social Media
   - RULE-SET,Zoom,Social Media
-  - RULE-SET,Media_CN,Media CN
+  - RULE-SET,Media_CN,CN Direct
   - RULE-SET,Media_Category,Media
   - RULE-SET,Media_Forums,Media
-  - RULE-SET,GFW,GFW
-  - RULE-SET,Personal_Direct_Rules,Personal-Direct
-  - RULE-SET,Personal_Direct,Personal-Direct
-  - RULE-SET,Personal_Proxy,Personal-Proxy
-  - RULE-SET,Personal_Proxy_List,Personal-Proxy
-  - RULE-SET,Personal,Personal
-  # ============= 内网与自定义网段直连（按需修改） =============
-  # - IP-CIDR,10.12.0.0/24,Global Direct
-  # - IP-CIDR,10.100.0.0/24,Global Direct
-  # - IP-CIDR,10.100.1.0/24,Global Direct
-  # - IP-CIDR,10.0.1.64/32,Global Direct
-  # - IP-CIDR,112.74.102.253/32,Global Direct
-  # - IP-CIDR,47.251.116.83/32,Global Direct
-  - IP-CIDR,172.16.0.0/12,Global Direct
-  - IP-CIDR,192.168.0.0/16,Global Direct
+  - RULE-SET,Scholar_CN,CN Direct
+  - RULE-SET,Scholar,Scholar
+  - RULE-SET,Personal,Final
   - GEOIP,LAN,Global Direct
-  - RULE-SET,ChinaDomain,CN Direct
-  - RULE-SET,ChinaCompanyIp,CN Direct
-  - RULE-SET,Download,CN Direct
   - GEOIP,CN,CN Direct
   - MATCH,Final
