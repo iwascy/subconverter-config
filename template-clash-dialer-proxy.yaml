@@ -61,60 +61,90 @@ proxy-groups:
   - name: YouTube
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
   - name: Streaming media
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
   - name: AI
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
   - name: Claude
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
   - name: Gemini
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
   - name: Grok
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
   - name: Perplexity
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
   - name: Social Media
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
   - name: Media
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
   - name: Scholar
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
@@ -132,6 +162,9 @@ proxy-groups:
   - name: Final
     type: select
     proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
       - SELECT
       - DIRECT
 
