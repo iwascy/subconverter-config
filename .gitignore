@@ -1,4 +1,6 @@
 local-clash-dialer-proxy.yaml
+local-clash-public.yaml
+local-clash-single-remote.yaml
 local-loon-dialer-proxy.conf
 local-loon-dialer-proxy.ini
 clash-dialer-proxy.yaml
