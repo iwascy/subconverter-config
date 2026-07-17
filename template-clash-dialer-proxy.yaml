@@ -112,6 +112,15 @@ proxy-groups:
       - SELECT
       - DIRECT
 
+  - name: ChatGPT
+    type: select
+    proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - SELECT
+      - DIRECT
+
   - name: Claude
     type: select
     proxies:
@@ -203,6 +212,15 @@ proxy-groups:
     proxies:
       - DIRECT
       - SELECT
+
+  - name: GFW
+    type: select
+    proxies:
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - SELECT
+      - DIRECT
 
   - name: Final
     type: select
@@ -510,7 +528,16 @@ rule-providers:
     path: ./ruleset/Personal-Direct.list
     interval: 86400
 
+  GFW:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list"
+    path: ./ruleset/ProxyGFWlist.list
+    interval: 86400
+
 rules:
+  - DST-PORT,22,DIRECT
   - RULE-SET,IQIYI,CN Direct
   - RULE-SET,Bilibili,CN Direct
   - RULE-SET,Streaming_YouTube,YouTube
@@ -523,7 +550,7 @@ rules:
   - RULE-SET,Cryptocurrency,Final
   - RULE-SET,PayPal,Final
   - RULE-SET,Stripe,Final
-  - RULE-SET,OpenAI,AI
+  - RULE-SET,OpenAI,ChatGPT
   - RULE-SET,Claude,Claude
   - RULE-SET,Gemini,Gemini
   - RULE-SET,Grok,Grok
@@ -553,6 +580,7 @@ rules:
   - RULE-SET,Personal_Direct_Rules,Personal-Direct
   - RULE-SET,Personal_Direct,Personal-Direct
   - RULE-SET,Personal,Personal
+  - RULE-SET,GFW,GFW
   - GEOIP,LAN,Global Direct
   - GEOIP,CN,CN Direct
   - MATCH,Final
