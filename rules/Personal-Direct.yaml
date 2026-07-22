@@ -4,3 +4,6 @@ payload:
   # - IP-CIDR,38.38.250.75/32,no-resolve
   - DOMAIN-SUFFIX,sub2api-proxy.cccy.fun
   - DOMAIN-SUFFIX,crs-proxy.cccy.fun
+  - DOMAIN-SUFFIX,hapi.cccy.fun
+  - DOMAIN-SUFFIX,hapi-ha.cccy.fun
+  - DOMAIN-SUFFIX,paseo-relay.cccy.fun
