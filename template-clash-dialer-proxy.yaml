@@ -6,6 +6,71 @@ allow-lan: true
 mode: rule
 log-level: info
 external-controller: 127.0.0.1:9090
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+sniffer:
+  enable: true
+  force-dns-mapping: true
+  parse-pure-ip: true
+  override-destination: true
+  sniff:
+    HTTP:
+      ports:
+        - 80
+        - 8080-8880
+    TLS:
+      ports:
+        - 443
+        - 8443
+    QUIC:
+      ports:
+        - 443
+        - 8443
+  skip-domain:
+    - "+.push.apple.com"
+
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  respect-rules: true
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - "https://dns.alidns.com/dns-query"
+    - "https://doh.pub/dns-query"
+  fallback:
+    - "https://1.1.1.1/dns-query#SELECT"
+    - "https://8.8.8.8/dns-query#SELECT"
+  proxy-server-nameserver:
+    - "https://dns.alidns.com/dns-query"
+    - "https://doh.pub/dns-query"
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    geosite:
+      - gfw
+  fake-ip-filter:
+    - "*.lan"
+    - "+.local"
+    - "+.market.xiaomi.com"
+    - "+.push.apple.com"
+    - "+.wechat.com"
+    - "+.weixin.qq.com"
+    - "+.servicewechat.com"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "time.*.com"
+    - "time.*.gov"
+    - "ntp.*.com"
 
 proxy-providers:
   SELF_PROVIDER:
@@ -61,19 +126,19 @@ proxy-groups:
   - name: YouTube
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Telegram
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: TelegramSG
@@ -97,109 +162,100 @@ proxy-groups:
   - name: Streaming media
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
-      - DIRECT
-
-  - name: AI
-    type: select
-    proxies:
-      - Self-Hosted-US
-      - Self-Hosted-SG
-      - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: ChatGPT
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Google
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Claude
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Gemini
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Grok
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Perplexity
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Social Media
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Media
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Scholar
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Personal
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Personal-Direct
@@ -225,24 +281,25 @@ proxy-groups:
   - name: GFW
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
   - name: Final
     type: select
     proxies:
+      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
-      - SELECT
       - DIRECT
 
 rule-providers:
   IQIYI:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/iqiyi.yaml"
     path: ./ruleset/iqiyi.yaml
@@ -250,6 +307,7 @@ rule-providers:
 
   Bilibili:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/bilibili.yaml"
     path: ./ruleset/bilibili.yaml
@@ -257,6 +315,7 @@ rule-providers:
 
   WeChat:
     type: http
+    proxy: SELECT
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WeChat/WeChat.yaml"
     path: ./ruleset/WeChat.yaml
@@ -264,6 +323,7 @@ rule-providers:
 
   Streaming_Netflix:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/netflix.yaml"
     path: ./ruleset/netflix.yaml
@@ -271,6 +331,7 @@ rule-providers:
 
   Streaming_Hulu:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/hulu.yaml"
     path: ./ruleset/hulu.yaml
@@ -278,6 +339,7 @@ rule-providers:
 
   Streaming_Disney:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/disney.yaml"
     path: ./ruleset/disney.yaml
@@ -285,6 +347,7 @@ rule-providers:
 
   Streaming_HBO:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/hbo.yaml"
     path: ./ruleset/hbo.yaml
@@ -292,6 +355,7 @@ rule-providers:
 
   Streaming_PrimeVideo:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/primevideo.yaml"
     path: ./ruleset/primevideo.yaml
@@ -299,6 +363,7 @@ rule-providers:
 
   Streaming_YouTube:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/youtube.yaml"
     path: ./ruleset/youtube.yaml
@@ -306,6 +371,7 @@ rule-providers:
 
   Streaming_Spotify:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/spotify.yaml"
     path: ./ruleset/spotify.yaml
@@ -313,6 +379,7 @@ rule-providers:
 
   Cryptocurrency:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-cryptocurrency.yaml"
     path: ./ruleset/cryptocurrency.yaml
@@ -320,6 +387,7 @@ rule-providers:
 
   PayPal:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/paypal.yaml"
     path: ./ruleset/paypal.yaml
@@ -327,6 +395,7 @@ rule-providers:
 
   Stripe:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/stripe.yaml"
     path: ./ruleset/stripe.yaml
@@ -334,6 +403,7 @@ rule-providers:
 
   OpenAI:
     type: http
+    proxy: SELECT
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
     path: ./ruleset/OpenAI.yaml
@@ -341,6 +411,7 @@ rule-providers:
 
   Claude:
     type: http
+    proxy: SELECT
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
     path: ./ruleset/Claude.yaml
@@ -348,6 +419,7 @@ rule-providers:
 
   Gemini:
     type: http
+    proxy: SELECT
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml"
     path: ./ruleset/Gemini.yaml
@@ -355,6 +427,7 @@ rule-providers:
 
   Grok:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/xai.yaml"
     path: ./ruleset/xai.yaml
@@ -362,6 +435,7 @@ rule-providers:
 
   Perplexity:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/perplexity.yaml"
     path: ./ruleset/perplexity.yaml
@@ -369,6 +443,7 @@ rule-providers:
 
   Games_CN:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-games@cn.yaml"
     path: ./ruleset/games-cn.yaml
@@ -376,6 +451,7 @@ rule-providers:
 
   Games:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-games.yaml"
     path: ./ruleset/games.yaml
@@ -383,6 +459,7 @@ rule-providers:
 
   GoogleFCM:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/googlefcm.yaml"
     path: ./ruleset/googlefcm.yaml
@@ -390,6 +467,7 @@ rule-providers:
 
   Google:
     type: http
+    proxy: SELECT
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
     path: ./ruleset/Google.yaml
@@ -397,6 +475,7 @@ rule-providers:
 
   OneDrive:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/onedrive.yaml"
     path: ./ruleset/onedrive.yaml
@@ -404,6 +483,7 @@ rule-providers:
 
   Microsoft_CN:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/microsoft@cn.yaml"
     path: ./ruleset/microsoft-cn.yaml
@@ -411,6 +491,7 @@ rule-providers:
 
   Microsoft:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/microsoft.yaml"
     path: ./ruleset/microsoft.yaml
@@ -418,6 +499,7 @@ rule-providers:
 
   iCloud_CN:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/icloud@cn.yaml"
     path: ./ruleset/icloud-cn.yaml
@@ -425,6 +507,7 @@ rule-providers:
 
   iCloud:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/icloud.yaml"
     path: ./ruleset/icloud.yaml
@@ -432,6 +515,7 @@ rule-providers:
 
   Apple_CN:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/apple@cn.yaml"
     path: ./ruleset/apple-cn.yaml
@@ -439,6 +523,7 @@ rule-providers:
 
   Apple:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/apple.yaml"
     path: ./ruleset/apple.yaml
@@ -446,6 +531,7 @@ rule-providers:
 
   TelegramSG:
     type: http
+    proxy: SELECT
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TelegramSG/TelegramSG.yaml"
     path: ./ruleset/TelegramSG.yaml
@@ -453,6 +539,7 @@ rule-providers:
 
   TelegramUS:
     type: http
+    proxy: SELECT
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TelegramUS/TelegramUS.yaml"
     path: ./ruleset/TelegramUS.yaml
@@ -460,6 +547,7 @@ rule-providers:
 
   Telegram:
     type: http
+    proxy: SELECT
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
     path: ./ruleset/Telegram.yaml
@@ -467,6 +555,7 @@ rule-providers:
 
   Social_Media_CN:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-social-media-cn.yaml"
     path: ./ruleset/social-media-cn.yaml
@@ -474,6 +563,7 @@ rule-providers:
 
   Social_Communication:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-communication.yaml"
     path: ./ruleset/communication.yaml
@@ -481,6 +571,7 @@ rule-providers:
 
   Social_Media_NotCN:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-social-media-%21cn.yaml"
     path: ./ruleset/social-media-notcn.yaml
@@ -488,6 +579,7 @@ rule-providers:
 
   Zoom:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/zoom.yaml"
     path: ./ruleset/zoom.yaml
@@ -495,6 +587,7 @@ rule-providers:
 
   Media_CN:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-media-cn.yaml"
     path: ./ruleset/media-cn.yaml
@@ -502,6 +595,7 @@ rule-providers:
 
   Media_Category:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-media.yaml"
     path: ./ruleset/media.yaml
@@ -509,6 +603,7 @@ rule-providers:
 
   Media_Forums:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-forums.yaml"
     path: ./ruleset/forums.yaml
@@ -516,6 +611,7 @@ rule-providers:
 
   Scholar_CN:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-scholar-cn.yaml"
     path: ./ruleset/scholar-cn.yaml
@@ -523,6 +619,7 @@ rule-providers:
 
   Scholar:
     type: http
+    proxy: SELECT
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-scholar-%21cn.yaml"
     path: ./ruleset/scholar-notcn.yaml
@@ -530,6 +627,7 @@ rule-providers:
 
   Personal:
     type: http
+    proxy: SELECT
     behavior: classical
     format: text
     url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Personal.list"
@@ -538,21 +636,31 @@ rule-providers:
 
   Personal_Direct_Rules:
     type: http
+    proxy: SELECT
     behavior: classical
     url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Personal-Direct.yaml"
     path: ./ruleset/Personal-Direct-Rules.yaml
     interval: 86400
 
-  Personal_Direct:
+  China_Domain:
     type: http
-    behavior: classical
-    format: text
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/Personal-Direct.list"
-    path: ./ruleset/Personal-Direct.list
+    proxy: SELECT
+    behavior: domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.yaml"
+    path: ./ruleset/MetaCubeX-CN-Domain.yaml
+    interval: 86400
+
+  China_IP:
+    type: http
+    proxy: SELECT
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.yaml"
+    path: ./ruleset/MetaCubeX-CN-IP.yaml
     interval: 86400
 
   ChinaDomain:
     type: http
+    proxy: SELECT
     behavior: classical
     format: text
     url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
@@ -561,6 +669,7 @@ rule-providers:
 
   ChinaCompanyIp:
     type: http
+    proxy: SELECT
     behavior: classical
     format: text
     url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list"
@@ -569,6 +678,7 @@ rule-providers:
 
   Download:
     type: http
+    proxy: SELECT
     behavior: classical
     format: text
     url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list"
@@ -577,6 +687,7 @@ rule-providers:
 
   GFW:
     type: http
+    proxy: SELECT
     behavior: classical
     format: text
     url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list"
@@ -585,6 +696,7 @@ rule-providers:
 
 rules:
   - DST-PORT,22,DIRECT
+  - GEOIP,LAN,Global Direct
   - RULE-SET,WeChat,CN Direct
   - RULE-SET,IQIYI,CN Direct
   - RULE-SET,Bilibili,CN Direct
@@ -605,7 +717,7 @@ rules:
   - RULE-SET,Perplexity,Perplexity
   - RULE-SET,Games_CN,CN Direct
   - RULE-SET,Games,Final
-  - RULE-SET,GoogleFCM,Final
+  - RULE-SET,GoogleFCM,Google
   - RULE-SET,Google,Google
   - RULE-SET,OneDrive,Final
   - RULE-SET,Microsoft_CN,CN Direct
@@ -627,12 +739,12 @@ rules:
   - RULE-SET,Scholar_CN,CN Direct
   - RULE-SET,Scholar,Scholar
   - RULE-SET,Personal_Direct_Rules,Personal-Direct
-  - RULE-SET,Personal_Direct,Personal-Direct
   - RULE-SET,Personal,Personal
+  - RULE-SET,China_Domain,CN Direct
+  - RULE-SET,China_IP,CN Direct,no-resolve
   - RULE-SET,ChinaDomain,CN Direct
   - RULE-SET,ChinaCompanyIp,CN Direct
   - RULE-SET,Download,CN Direct
   - RULE-SET,GFW,GFW
-  - GEOIP,LAN,Global Direct
   - GEOIP,CN,CN Direct
   - MATCH,Final
