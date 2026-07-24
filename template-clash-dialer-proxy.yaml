@@ -6,9 +6,14 @@ allow-lan: true
 mode: rule
 log-level: info
 external-controller: 127.0.0.1:9090
-ipv6: false
+ipv6: true
 unified-delay: true
 tcp-concurrent: true
+
+tun:
+  route-exclude-address:
+    - "2001:df1:7880:5::57d/128"
+    - "2603:c024:451f:ca39:0:46cd:2c0c:2c4f/128"
 
 profile:
   store-selected: true
@@ -37,7 +42,7 @@ sniffer:
 
 dns:
   enable: true
-  ipv6: false
+  ipv6: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   respect-rules: true
