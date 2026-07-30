@@ -83,7 +83,7 @@ proxy-providers:
     url: "<SELF_SUB_URL>?target=ClashMeta"
     interval: 36000
     path: "./proxy_provider/self.yaml"
-    filter: "(?i)(bwg|bagevm|self-hosted|oracle)"
+    filter: "(?i)^SELF-"
     health-check:
       enable: true
       url: "https://www.gstatic.com/generate_204"
@@ -94,6 +94,7 @@ proxy-providers:
     url: "<ALL_SUB_URL>?target=ClashMeta"
     interval: 36000
     path: "./proxy_provider/all.yaml"
+    filter: "(?i)^(AIRPORT|SELF)-"
     health-check:
       enable: true
       url: "https://www.gstatic.com/generate_204"
@@ -114,19 +115,19 @@ proxy-groups:
     type: select
     use:
       - SELF_PROVIDER
-    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(US|美国|洛杉矶)|(US|美国|洛杉矶).*(bwg|bagevm|self-hosted|oracle))"
+    filter: "(?i)^SELF-US-"
 
   - name: Self-Hosted-SG
     type: select
     use:
       - SELF_PROVIDER
-    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(SG|新加坡)|(SG|新加坡).*(bwg|bagevm|self-hosted|oracle))"
+    filter: "(?i)^SELF-SG-"
 
   - name: Self-Hosted-HK
     type: select
     use:
       - SELF_PROVIDER
-    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(HK|香港)|(HK|香港).*(bwg|bagevm|self-hosted|oracle))"
+    filter: "(?i)^SELF-HK-"
 
   - name: YouTube
     type: select
