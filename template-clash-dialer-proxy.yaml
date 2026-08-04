@@ -129,6 +129,12 @@ proxy-groups:
       - SELF_PROVIDER
     filter: "(?i)^SELF-HK-"
 
+  - name: NL
+    type: select
+    use:
+      - ALL_PROVIDER
+    filter: "(?i)^(AIRPORT|SELF)-NL-"
+
   - name: YouTube
     type: select
     proxies:
@@ -141,6 +147,16 @@ proxy-groups:
   - name: Telegram
     type: select
     proxies:
+      - SELECT
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - DIRECT
+
+  - name: TelegramNL
+    type: select
+    proxies:
+      - NL
       - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
@@ -552,6 +568,14 @@ rule-providers:
     path: ./ruleset/apple.yaml
     interval: 86400
 
+  TelegramNL:
+    type: http
+    proxy: SELECT
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TelegramNL/TelegramNL.yaml"
+    path: ./ruleset/TelegramNL.yaml
+    interval: 86400
+
   TelegramSG:
     type: http
     proxy: SELECT
@@ -758,6 +782,7 @@ rules:
   - RULE-SET,iCloud,Final
   - RULE-SET,Apple_CN,CN Direct
   - RULE-SET,Apple,Final
+  - RULE-SET,TelegramNL,TelegramNL
   - RULE-SET,TelegramSG,TelegramSG
   - RULE-SET,TelegramUS,TelegramUS
   - RULE-SET,Telegram,Telegram
