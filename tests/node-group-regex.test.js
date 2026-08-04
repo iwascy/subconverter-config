@@ -46,6 +46,16 @@ test("unknown and historical names do not enter formal groups", () => {
   assert.doesNotMatch("BWG-US-01", normalizedNode);
 });
 
+test("Europe group accepts canonical German nodes and two legacy Shoii nodes", () => {
+  const europe = /^(?:(?:AIRPORT|SELF)-DE-|Shoii-Zouter-HK2-v(?:4|6)-DE-SS$)/i;
+
+  assert.match("SELF-DE-DIRECT-BRDE-01", europe);
+  assert.match("Shoii-Zouter-HK2-v4-DE-SS", europe);
+  assert.match("Shoii-Zouter-HK2-v6-DE-SS", europe);
+  assert.doesNotMatch("Shoii-Zouter-HK2-v5-DE-SS", europe);
+  assert.doesNotMatch("Shoii-Zouter-HK2-v4-SG-SS", europe);
+});
+
 test("client configs contain no chained-proxy groups", () => {
   const relay = fs.readFileSync(path.join(root, "relay.ini"), "utf8");
   const config = fs.readFileSync(path.join(root, "config.ini"), "utf8");
@@ -59,7 +69,7 @@ test("client configs contain no chained-proxy groups", () => {
   assert.doesNotMatch(config, /custom_proxy_group=Vless/);
 });
 
-test("Clash and Loon filters only accept canonical prefixes", () => {
+test("Clash and Loon filters accept canonical prefixes and explicit compatibility nodes", () => {
   const clash = fs.readFileSync(
     path.join(root, "template-clash-dialer-proxy.yaml"),
     "utf8",
@@ -69,10 +79,14 @@ test("Clash and Loon filters only accept canonical prefixes", () => {
     "utf8",
   );
 
-  assert.match(clash, /filter: "\(\?i\)\^\(AIRPORT\|SELF\)-"/);
+  assert.match(clash, /filter: "\(\?i\)\(\^\(AIRPORT\|SELF\)-\|\^Shoii-Zouter-HK2-v\(4\|6\)-DE-SS\$\)"/);
   assert.match(clash, /filter: "\(\?i\)\^SELF-US-"/);
+  assert.match(clash, /name: Europe/);
+  assert.match(clash, /Shoii-Zouter-HK2-v\(4\|6\)-DE-SS/);
   assert.doesNotMatch(clash, /bwg\|bagevm\|self-hosted\|oracle/i);
-  assert.match(loon, /FilterKey="\(\?i\)\^\(AIRPORT\|SELF\)-"/);
+  assert.match(loon, /FilterKey="\(\?i\)\(\^\(AIRPORT\|SELF\)-\|\^Shoii-Zouter-HK2-v\(4\|6\)-DE-SS\$\)"/);
+  assert.match(loon, /Filter-Europe = NameRegex/);
+  assert.match(loon, /Shoii-Zouter-HK2-v\(4\|6\)-DE-SS/);
   assert.doesNotMatch(loon, /bwg\|bagevm\|self-hosted\|oracle/i);
 });
 

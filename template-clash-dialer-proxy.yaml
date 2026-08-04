@@ -94,7 +94,7 @@ proxy-providers:
     url: "<ALL_SUB_URL>?target=ClashMeta"
     interval: 36000
     path: "./proxy_provider/all.yaml"
-    filter: "(?i)^(AIRPORT|SELF)-"
+    filter: "(?i)(^(AIRPORT|SELF)-|^Shoii-Zouter-HK2-v(4|6)-DE-SS$)"
     health-check:
       enable: true
       url: "https://www.gstatic.com/generate_204"
@@ -107,6 +107,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
     use:
       - ALL_PROVIDER
@@ -134,6 +135,12 @@ proxy-groups:
     use:
       - ALL_PROVIDER
     filter: "(?i)^(AIRPORT|SELF)-NL-"
+
+  - name: Europe
+    type: select
+    use:
+      - ALL_PROVIDER
+    filter: "(?i)(^(AIRPORT|SELF)-DE-|^Shoii-Zouter-HK2-v(4|6)-DE-SS$)"
 
   - name: YouTube
     type: select
@@ -243,6 +250,15 @@ proxy-groups:
       - Self-Hosted-SG
       - Self-Hosted-HK
       - DIRECT
+
+  - name: Games
+    type: select
+    proxies:
+      - DIRECT
+      - SELECT
+      - Self-Hosted-HK
+      - Self-Hosted-SG
+      - Self-Hosted-US
 
   - name: Social Media
     type: select
@@ -488,12 +504,20 @@ rule-providers:
     path: ./ruleset/games-cn.yaml
     interval: 86400
 
+  Riot:
+    type: http
+    proxy: SELECT
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Riot/Riot.yaml"
+    path: ./ruleset/Riot.yaml
+    interval: 86400
+
   Games:
     type: http
     proxy: SELECT
-    behavior: domain
-    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-games.yaml"
-    path: ./ruleset/games.yaml
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game_No_Resolve.yaml"
+    path: ./ruleset/Game-No-Resolve.yaml
     interval: 86400
 
   GoogleFCM:
@@ -752,6 +776,10 @@ rule-providers:
 rules:
   - DST-PORT,22,DIRECT
   - GEOIP,LAN,Global Direct
+  - PROCESS-NAME,VALORANT-Win64-Shipping.exe,Games
+  - PROCESS-NAME,RiotClientServices.exe,Games
+  - PROCESS-NAME,vgc.exe,Games
+  - PROCESS-NAME,vgm.exe,Games
   - RULE-SET,WeChat,CN Direct
   - RULE-SET,IQIYI,CN Direct
   - RULE-SET,Bilibili,CN Direct
@@ -772,7 +800,8 @@ rules:
   - RULE-SET,Grok,Grok
   - RULE-SET,Perplexity,Perplexity
   - RULE-SET,Games_CN,CN Direct
-  - RULE-SET,Games,Final
+  - RULE-SET,Riot,Games
+  - RULE-SET,Games,Games
   - RULE-SET,GoogleFCM,Google
   - RULE-SET,Google,Google
   - RULE-SET,OneDrive,Final
