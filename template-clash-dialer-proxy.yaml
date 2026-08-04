@@ -149,6 +149,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Telegram
@@ -158,6 +159,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: TelegramNL
@@ -168,6 +170,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: TelegramSG
@@ -177,6 +180,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-HK
       - SELECT
+      - Europe
       - DIRECT
 
   - name: TelegramUS
@@ -186,6 +190,7 @@ proxy-groups:
       - Self-Hosted-SG
       - Self-Hosted-HK
       - SELECT
+      - Europe
       - DIRECT
 
   - name: Streaming media
@@ -195,6 +200,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: ChatGPT
@@ -204,6 +210,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Google
@@ -213,6 +220,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Claude
@@ -222,6 +230,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Gemini
@@ -231,6 +240,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Grok
@@ -240,6 +250,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Perplexity
@@ -249,6 +260,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Games
@@ -256,6 +268,7 @@ proxy-groups:
     proxies:
       - DIRECT
       - SELECT
+      - Europe
       - Self-Hosted-HK
       - Self-Hosted-SG
       - Self-Hosted-US
@@ -267,6 +280,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Media
@@ -276,6 +290,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Scholar
@@ -285,6 +300,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Longbridge
@@ -294,6 +310,7 @@ proxy-groups:
       - Self-Hosted-HK
       - Self-Hosted-SG
       - Self-Hosted-US
+      - Europe
       - DIRECT
 
   - name: Personal
@@ -303,6 +320,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Personal-Direct
@@ -312,6 +330,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - SELECT
 
   - name: Global Direct
@@ -323,6 +342,7 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
+      - Europe
       - SELECT
 
   - name: GFW
@@ -332,6 +352,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Final
@@ -341,6 +362,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
 rule-providers:

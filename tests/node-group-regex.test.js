@@ -90,6 +90,59 @@ test("Clash and Loon filters accept canonical prefixes and explicit compatibilit
   assert.doesNotMatch(loon, /bwg\|bagevm\|self-hosted\|oracle/i);
 });
 
+test("every selectable routing group offers Europe", () => {
+  const clash = fs.readFileSync(
+    path.join(root, "template-clash-dialer-proxy.yaml"),
+    "utf8",
+  );
+  const loon = fs.readFileSync(
+    path.join(root, "template-loon-dialer-proxy.conf"),
+    "utf8",
+  );
+  const routingGroups = [
+    "YouTube",
+    "Telegram",
+    "TelegramNL",
+    "TelegramSG",
+    "TelegramUS",
+    "Streaming media",
+    "ChatGPT",
+    "Google",
+    "Claude",
+    "Gemini",
+    "Grok",
+    "Perplexity",
+    "Social Media",
+    "Media",
+    "Scholar",
+    "Longbridge",
+    "Personal",
+    "Personal-Direct",
+    "CN Direct",
+    "GFW",
+    "Final",
+  ];
+
+  for (const group of [...routingGroups, "Games"]) {
+    const start = clash.indexOf(`  - name: ${group}\n`);
+    const end = clash.indexOf("\n  - name:", start + 1);
+    const block = clash.slice(start, end === -1 ? undefined : end);
+
+    assert.notEqual(start, -1, `missing Clash group ${group}`);
+    assert.match(block, /^      - Europe$/m, `Clash group ${group}`);
+  }
+
+  for (const group of routingGroups) {
+    const line = loon.match(new RegExp(`^${group} = select,.*$`, "m"));
+
+    assert.ok(line, `missing Loon group ${group}`);
+    assert.match(line[0], /(?:^|, )Europe(?:, |$)/, `Loon group ${group}`);
+  }
+
+  assert.match(clash, /  - name: Global Direct\n    type: select\n    proxies:\n      - DIRECT\n/);
+  assert.match(loon, /^Global Direct = select, DIRECT,/m);
+});
+
 test("full migration covers every Sub-Store subscription", () => {
   const migration = fs.readFileSync(
     path.join(root, "scripts", "substore-canonical-names.jq"),
