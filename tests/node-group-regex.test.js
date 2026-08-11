@@ -106,7 +106,7 @@ test("every selectable routing group offers Europe", () => {
     "TelegramSG",
     "TelegramUS",
     "Streaming media",
-    "ChatGPT",
+    "AI",
     "Google",
     "Claude",
     "Gemini",
@@ -141,6 +141,54 @@ test("every selectable routing group offers Europe", () => {
 
   assert.match(clash, /  - name: Global Direct\n    type: select\n    proxies:\n      - DIRECT\n/);
   assert.match(loon, /^Global Direct = select, DIRECT,/m);
+});
+
+test("AI fallback follows dedicated providers and exposes all nodes", () => {
+  const aiList = fs.readFileSync(path.join(root, "AI.list"), "utf8");
+  const config = fs.readFileSync(path.join(root, "config.ini"), "utf8");
+  const relay = fs.readFileSync(path.join(root, "relay.ini"), "utf8");
+  const clash = fs.readFileSync(
+    path.join(root, "template-clash-dialer-proxy.yaml"),
+    "utf8",
+  );
+  const loon = fs.readFileSync(
+    path.join(root, "template-loon-dialer-proxy.conf"),
+    "utf8",
+  );
+
+  assert.match(aiList, /^DOMAIN-SUFFIX,opencode\.ai$/m);
+
+  for (const source of [config, relay]) {
+    const dedicated = source.indexOf("ruleset=Perplexity,");
+    const fallback = source.indexOf("ruleset=AI,");
+    const aiGroup = source.match(/^custom_proxy_group=AI.*$/m)?.[0] ?? "";
+
+    assert.ok(dedicated !== -1 && dedicated < fallback);
+    assert.match(aiGroup, /\[\]US/);
+    assert.match(aiGroup, /\(\?i\)\^\(AIRPORT\|SELF\)-/);
+  }
+
+  const clashGroupStart = clash.indexOf("  - name: AI\n");
+  const clashGroupEnd = clash.indexOf("\n  - name:", clashGroupStart + 1);
+  const clashGroup = clash.slice(clashGroupStart, clashGroupEnd);
+  const clashDedicated = clash.indexOf("  - RULE-SET,Perplexity,Perplexity");
+  const clashFallback = clash.indexOf("  - RULE-SET,AI,AI");
+
+  assert.notEqual(clashGroupStart, -1);
+  assert.match(clashGroup, /^      - Self-Hosted-US$/m);
+  assert.match(clashGroup, /^    use:\n      - ALL_PROVIDER$/m);
+  assert.match(clash, /^  - DOMAIN-SUFFIX,opencode\.ai,AI$/m);
+  assert.ok(clashDedicated !== -1 && clashDedicated < clashFallback);
+  assert.doesNotMatch(clash, /name: ChatGPT|RULE-SET,OpenAI,ChatGPT/);
+
+  const loonGroup = loon.match(/^AI = select,.*$/m)?.[0] ?? "";
+  const loonDedicated = loon.indexOf("policy=Perplexity");
+  const loonFallback = loon.indexOf("policy=AI, tag=AI");
+
+  assert.match(loonGroup, /(?:^|, )Filter-All(?:, |$)/);
+  assert.match(loon, /^DOMAIN-SUFFIX,opencode\.ai,AI$/m);
+  assert.ok(loonDedicated !== -1 && loonDedicated < loonFallback);
+  assert.doesNotMatch(loon, /^ChatGPT =|policy=ChatGPT/m);
 });
 
 test("full migration covers every Sub-Store subscription", () => {

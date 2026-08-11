@@ -56,6 +56,12 @@ AIRPORT-UN-<SOURCE>-<ORIGINAL>
 
 完整迁移映射记录在 `scripts/substore-canonical-names.jq`。
 
+## AI 分流
+
+Claude、Gemini、Grok 和 Perplexity 优先进入各自的专用策略组。OpenAI、ChatGPT、OpenCode 以及其他已收录但没有独立策略组的 AI 服务随后进入 `AI` 兜底组。规则只收录明确的 AI 服务域名，不使用整个 `.ai` 顶级域名作为通配规则。
+
+`AI` 直接提供地区组和全部规范节点，避免必须先进入 `SELECT` 才能选择具体节点。Clash 使用 `ALL_PROVIDER`，Loon 使用 `Filter-All`，subconverter 使用 `^(AIRPORT|SELF)-`，三种配置共享相同的节点边界。
+
 ## 变更历史
 
 ### 2026-07-30 - 引入出口优先命名协议
@@ -77,3 +83,13 @@ AIRPORT-UN-<SOURCE>-<ORIGINAL>
 **影响范围**：31 个 Sub-Store 子订阅、主组合订阅、subconverter、Clash 和 Loon 配置。
 
 **决策依据**：让 Sub-Store 成为节点角色和地区的唯一命名来源，客户端只解析固定字段，避免多套模糊规则继续分叉。
+
+### 2026-08-11 - 引入统一 AI 兜底分流
+
+**变更内容**：将 OpenCode 加入 AI 规则，统一 Clash、Loon 和 subconverter 的 `AI` 策略组，并把专用厂商规则置于 AI 兜底规则之前。
+
+**变更理由**：未单独分类的 AI 服务原本会落入 `Final`，而不同客户端还混用 `ChatGPT`、`OpenAI` 和 `AI` 名称。
+
+**影响范围**：AI 规则源、subconverter 配置、Clash/Loon 模板及实际客户端配置。
+
+**决策依据**：专用策略保持独立控制，统一兜底组承接其余 AI 流量；直接暴露地区组和全部节点，减少策略选择层级。
