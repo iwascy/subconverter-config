@@ -112,6 +112,7 @@ test("every selectable routing group offers Europe", () => {
     "Gemini",
     "Grok",
     "Perplexity",
+    "PikPak",
     "Social Media",
     "Media",
     "Scholar",
@@ -189,6 +190,28 @@ test("AI fallback follows dedicated providers and exposes all nodes", () => {
   assert.match(loon, /^DOMAIN-SUFFIX,opencode\.ai,AI$/m);
   assert.ok(loonDedicated !== -1 && loonDedicated < loonFallback);
   assert.doesNotMatch(loon, /^ChatGPT =|policy=ChatGPT/m);
+});
+
+test("PikPak has a dedicated group and precedes the AI fallback", () => {
+  const clash = fs.readFileSync(
+    path.join(root, "template-clash-dialer-proxy.yaml"),
+    "utf8",
+  );
+  const loon = fs.readFileSync(
+    path.join(root, "template-loon-dialer-proxy.conf"),
+    "utf8",
+  );
+
+  assert.match(clash, /^  - name: PikPak$/m);
+  assert.match(clash, /^  PikPak:\n(?:.*\n)*?    behavior: classical$/m);
+  const clashPikPak = clash.indexOf("  - RULE-SET,PikPak,PikPak");
+  const clashFallback = clash.indexOf("  - RULE-SET,AI,AI");
+  assert.ok(clashPikPak !== -1 && clashPikPak < clashFallback);
+
+  assert.match(loon, /^PikPak = select,.*$/m);
+  const loonPikPak = loon.indexOf("policy=PikPak, tag=PikPak");
+  const loonFallback = loon.indexOf("policy=AI, tag=AI");
+  assert.ok(loonPikPak !== -1 && loonPikPak < loonFallback);
 });
 
 test("full migration covers every Sub-Store subscription", () => {

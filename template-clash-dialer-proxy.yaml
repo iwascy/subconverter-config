@@ -264,6 +264,16 @@ proxy-groups:
       - Europe
       - DIRECT
 
+  - name: PikPak
+    type: select
+    proxies:
+      - SELECT
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - Europe
+      - DIRECT
+
   - name: Games
     type: select
     proxies:
@@ -517,6 +527,14 @@ rule-providers:
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/perplexity.yaml"
     path: ./ruleset/perplexity.yaml
+    interval: 86400
+
+  PikPak:
+    type: http
+    proxy: SELECT
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/PikPak.yaml"
+    path: ./ruleset/PikPak.yaml
     interval: 86400
 
   Games_CN:
@@ -821,6 +839,7 @@ rules:
   - RULE-SET,Gemini,Gemini
   - RULE-SET,Grok,Grok
   - RULE-SET,Perplexity,Perplexity
+  - RULE-SET,PikPak,PikPak
   - DOMAIN-SUFFIX,opencode.ai,AI
   - RULE-SET,AI,AI
   - RULE-SET,Games_CN,CN Direct
