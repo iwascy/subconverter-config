@@ -83,7 +83,7 @@ proxy-providers:
     url: "<SELF_SUB_URL>?target=ClashMeta"
     interval: 36000
     path: "./proxy_provider/self.yaml"
-    filter: "(?i)(bwg|bagevm|self-hosted|oracle)"
+    filter: "(?i)^SELF-"
     health-check:
       enable: true
       url: "https://www.gstatic.com/generate_204"
@@ -94,6 +94,7 @@ proxy-providers:
     url: "<ALL_SUB_URL>?target=ClashMeta"
     interval: 36000
     path: "./proxy_provider/all.yaml"
+    filter: "(?i)(^(AIRPORT|SELF)-|^Shoii-Zouter-HK2-v(4|6)-DE-SS$)"
     health-check:
       enable: true
       url: "https://www.gstatic.com/generate_204"
@@ -106,6 +107,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
     use:
       - ALL_PROVIDER
@@ -114,19 +116,31 @@ proxy-groups:
     type: select
     use:
       - SELF_PROVIDER
-    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(US|美国|洛杉矶)|(US|美国|洛杉矶).*(bwg|bagevm|self-hosted|oracle))"
+    filter: "(?i)^SELF-US-"
 
   - name: Self-Hosted-SG
     type: select
     use:
       - SELF_PROVIDER
-    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(SG|新加坡)|(SG|新加坡).*(bwg|bagevm|self-hosted|oracle))"
+    filter: "(?i)^SELF-SG-"
 
   - name: Self-Hosted-HK
     type: select
     use:
       - SELF_PROVIDER
-    filter: "(?i)((bwg|bagevm|self-hosted|oracle).*(HK|香港)|(HK|香港).*(bwg|bagevm|self-hosted|oracle))"
+    filter: "(?i)^SELF-HK-"
+
+  - name: NL
+    type: select
+    use:
+      - ALL_PROVIDER
+    filter: "(?i)^(AIRPORT|SELF)-NL-"
+
+  - name: Europe
+    type: select
+    use:
+      - ALL_PROVIDER
+    filter: "(?i)(^(AIRPORT|SELF)-DE-|^Shoii-Zouter-HK2-v(4|6)-DE-SS$)"
 
   - name: YouTube
     type: select
@@ -135,6 +149,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Telegram
@@ -144,6 +159,18 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
+      - DIRECT
+
+  - name: TelegramNL
+    type: select
+    proxies:
+      - NL
+      - SELECT
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: TelegramSG
@@ -153,6 +180,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-HK
       - SELECT
+      - Europe
       - DIRECT
 
   - name: TelegramUS
@@ -162,6 +190,7 @@ proxy-groups:
       - Self-Hosted-SG
       - Self-Hosted-HK
       - SELECT
+      - Europe
       - DIRECT
 
   - name: Streaming media
@@ -171,16 +200,19 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
-  - name: ChatGPT
+  - name: AI
     type: select
     proxies:
-      - SELECT
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
+    use:
+      - ALL_PROVIDER
 
   - name: Google
     type: select
@@ -189,6 +221,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Claude
@@ -198,6 +231,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Gemini
@@ -207,6 +241,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Grok
@@ -216,6 +251,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Perplexity
@@ -225,7 +261,28 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
+
+  - name: PikPak
+    type: select
+    proxies:
+      - SELECT
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - Europe
+      - DIRECT
+
+  - name: Games
+    type: select
+    proxies:
+      - DIRECT
+      - SELECT
+      - Europe
+      - Self-Hosted-HK
+      - Self-Hosted-SG
+      - Self-Hosted-US
 
   - name: Social Media
     type: select
@@ -234,6 +291,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Media
@@ -243,6 +301,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Scholar
@@ -252,6 +311,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Longbridge
@@ -261,6 +321,7 @@ proxy-groups:
       - Self-Hosted-HK
       - Self-Hosted-SG
       - Self-Hosted-US
+      - Europe
       - DIRECT
 
   - name: Personal
@@ -270,6 +331,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Personal-Direct
@@ -279,6 +341,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - SELECT
 
   - name: Global Direct
@@ -290,6 +353,7 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
+      - Europe
       - SELECT
 
   - name: GFW
@@ -299,6 +363,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
   - name: Final
@@ -308,6 +373,7 @@ proxy-groups:
       - Self-Hosted-US
       - Self-Hosted-SG
       - Self-Hosted-HK
+      - Europe
       - DIRECT
 
 rule-providers:
@@ -423,12 +489,12 @@ rule-providers:
     path: ./ruleset/MetaCubeX-Longbridge.yaml
     interval: 86400
 
-  OpenAI:
+  AI:
     type: http
     proxy: SELECT
-    behavior: classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
-    path: ./ruleset/OpenAI.yaml
+    behavior: domain
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/AI.yaml"
+    path: ./ruleset/AI.yaml
     interval: 86400
 
   Claude:
@@ -463,6 +529,14 @@ rule-providers:
     path: ./ruleset/perplexity.yaml
     interval: 86400
 
+  PikPak:
+    type: http
+    proxy: SELECT
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/PikPak.yaml"
+    path: ./ruleset/PikPak.yaml
+    interval: 86400
+
   Games_CN:
     type: http
     proxy: SELECT
@@ -471,12 +545,20 @@ rule-providers:
     path: ./ruleset/games-cn.yaml
     interval: 86400
 
+  Riot:
+    type: http
+    proxy: SELECT
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Riot/Riot.yaml"
+    path: ./ruleset/Riot.yaml
+    interval: 86400
+
   Games:
     type: http
     proxy: SELECT
-    behavior: domain
-    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/category-games.yaml"
-    path: ./ruleset/games.yaml
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game_No_Resolve.yaml"
+    path: ./ruleset/Game-No-Resolve.yaml
     interval: 86400
 
   GoogleFCM:
@@ -549,6 +631,14 @@ rule-providers:
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/apple.yaml"
     path: ./ruleset/apple.yaml
+    interval: 86400
+
+  TelegramNL:
+    type: http
+    proxy: SELECT
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TelegramNL/TelegramNL.yaml"
+    path: ./ruleset/TelegramNL.yaml
     interval: 86400
 
   TelegramSG:
@@ -664,6 +754,14 @@ rule-providers:
     path: ./ruleset/Personal-Direct-Rules.yaml
     interval: 86400
 
+  Geolocation_CN:
+    type: http
+    proxy: SELECT
+    behavior: domain
+    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/geolocation-cn.yaml"
+    path: ./ruleset/v2fly-geolocation-cn.yaml
+    interval: 86400
+
   China_Domain:
     type: http
     proxy: SELECT
@@ -719,6 +817,10 @@ rule-providers:
 rules:
   - DST-PORT,22,DIRECT
   - GEOIP,LAN,Global Direct
+  - PROCESS-NAME,VALORANT-Win64-Shipping.exe,Games
+  - PROCESS-NAME,RiotClientServices.exe,Games
+  - PROCESS-NAME,vgc.exe,Games
+  - PROCESS-NAME,vgm.exe,Games
   - RULE-SET,WeChat,CN Direct
   - RULE-SET,IQIYI,CN Direct
   - RULE-SET,Bilibili,CN Direct
@@ -733,13 +835,16 @@ rules:
   - RULE-SET,PayPal,Final
   - RULE-SET,Stripe,Final
   - RULE-SET,Longbridge,Longbridge
-  - RULE-SET,OpenAI,ChatGPT
   - RULE-SET,Claude,Claude
   - RULE-SET,Gemini,Gemini
   - RULE-SET,Grok,Grok
   - RULE-SET,Perplexity,Perplexity
+  - RULE-SET,PikPak,PikPak
+  - DOMAIN-SUFFIX,opencode.ai,AI
+  - RULE-SET,AI,AI
   - RULE-SET,Games_CN,CN Direct
-  - RULE-SET,Games,Final
+  - RULE-SET,Riot,Games
+  - RULE-SET,Games,Games
   - RULE-SET,GoogleFCM,Google
   - RULE-SET,Google,Google
   - RULE-SET,OneDrive,Final
@@ -749,6 +854,7 @@ rules:
   - RULE-SET,iCloud,Final
   - RULE-SET,Apple_CN,CN Direct
   - RULE-SET,Apple,Final
+  - RULE-SET,TelegramNL,TelegramNL
   - RULE-SET,TelegramSG,TelegramSG
   - RULE-SET,TelegramUS,TelegramUS
   - RULE-SET,Telegram,Telegram
@@ -763,6 +869,7 @@ rules:
   - RULE-SET,Scholar,Scholar
   - RULE-SET,Personal_Direct_Rules,Personal-Direct
   - RULE-SET,Personal,Personal
+  - RULE-SET,Geolocation_CN,CN Direct
   - RULE-SET,China_Domain,CN Direct
   - RULE-SET,China_IP,CN Direct,no-resolve
   - RULE-SET,ChinaDomain,CN Direct
