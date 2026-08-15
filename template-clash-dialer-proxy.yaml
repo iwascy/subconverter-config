@@ -227,6 +227,15 @@ proxy-groups:
       - Self-Hosted-HK
       - DIRECT
 
+  - name: PikPak
+    type: select
+    proxies:
+      - SELECT
+      - Self-Hosted-US
+      - Self-Hosted-SG
+      - Self-Hosted-HK
+      - DIRECT
+
   - name: Social Media
     type: select
     proxies:
@@ -333,6 +342,14 @@ rule-providers:
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WeChat/WeChat.yaml"
     path: ./ruleset/WeChat.yaml
+    interval: 86400
+
+  PikPak:
+    type: http
+    proxy: SELECT
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/PikPak.yaml"
+    path: ./ruleset/PikPak.yaml
     interval: 86400
 
   Streaming_Netflix:
@@ -717,6 +734,11 @@ rule-providers:
     interval: 86400
 
 rules:
+  # PikPak domain rules must precede WeChat's broad Tencent ASN rule.
+  - DOMAIN-SUFFIX,mypikpak.com,PikPak
+  - DOMAIN-SUFFIX,pikpak.com,PikPak
+  - DOMAIN-SUFFIX,pikpak.io,PikPak
+  - RULE-SET,PikPak,PikPak
   - DST-PORT,22,DIRECT
   - GEOIP,LAN,Global Direct
   - RULE-SET,WeChat,CN Direct
