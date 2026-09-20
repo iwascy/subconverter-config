@@ -263,7 +263,7 @@ proxy-groups:
       - Self-Hosted-HK
       - DIRECT
 
-  - name: Longbridge
+  - name: 金融
     type: select
     proxies:
       - SELECT
@@ -271,6 +271,8 @@ proxy-groups:
       - Self-Hosted-SG
       - Self-Hosted-US
       - DIRECT
+    use:
+      - ALL_PROVIDER
 
   - name: Personal
     type: select
@@ -430,6 +432,14 @@ rule-providers:
     behavior: domain
     url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/stripe.yaml"
     path: ./ruleset/stripe.yaml
+    interval: 86400
+
+  Bybit:
+    type: http
+    proxy: SELECT
+    behavior: domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bybit.yaml"
+    path: ./ruleset/MetaCubeX-Bybit.yaml
     interval: 86400
 
   Longbridge:
@@ -751,10 +761,12 @@ rules:
   - RULE-SET,Streaming_HBO,Streaming media
   - RULE-SET,Streaming_PrimeVideo,Streaming media
   - RULE-SET,Streaming_Spotify,Streaming media
+  # 金融专用规则优先于加密货币通用规则。
+  - RULE-SET,Longbridge,金融
+  - RULE-SET,Bybit,金融
   - RULE-SET,Cryptocurrency,Final
   - RULE-SET,PayPal,Final
   - RULE-SET,Stripe,Final
-  - RULE-SET,Longbridge,Longbridge
   - RULE-SET,OpenAI,ChatGPT
   - RULE-SET,Claude,Claude
   - RULE-SET,Gemini,Gemini
