@@ -1,3 +1,4 @@
+find-process-mode: strict
 # Local Clash config generated from macau.ini group/rule layout.
 # Fill the subscription placeholders before using.
 
@@ -434,6 +435,14 @@ rule-providers:
     path: ./ruleset/stripe.yaml
     interval: 86400
 
+  Binance:
+    type: http
+    proxy: SELECT
+    behavior: domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/binance.yaml"
+    path: ./ruleset/MetaCubeX-Binance.yaml
+    interval: 86400
+
   Bybit:
     type: http
     proxy: SELECT
@@ -744,6 +753,16 @@ rule-providers:
     interval: 86400
 
 rules:
+  # Android 包名兜底覆盖未收录域名和直连 IP，金融规则优先于 WeChat 等通用规则。
+  - PROCESS-NAME,com.bybit.app,金融
+  - PROCESS-NAME,com.binance.dev,金融
+  - DOMAIN-SUFFIX,bybit.com,金融
+  - DOMAIN,api.wsot2022.com,金融
+  - DOMAIN-SUFFIX,binance.com,金融
+  - DOMAIN-SUFFIX,bsappapi.cc,金融
+  - RULE-SET,Longbridge,金融
+  - RULE-SET,Bybit,金融
+  - RULE-SET,Binance,金融
   # PikPak domain rules must precede WeChat's broad Tencent ASN rule.
   - DOMAIN-SUFFIX,mypikpak.com,PikPak
   - DOMAIN-SUFFIX,pikpak.com,PikPak
@@ -761,9 +780,6 @@ rules:
   - RULE-SET,Streaming_HBO,Streaming media
   - RULE-SET,Streaming_PrimeVideo,Streaming media
   - RULE-SET,Streaming_Spotify,Streaming media
-  # 金融专用规则优先于加密货币通用规则。
-  - RULE-SET,Longbridge,金融
-  - RULE-SET,Bybit,金融
   - RULE-SET,Cryptocurrency,Final
   - RULE-SET,PayPal,Final
   - RULE-SET,Stripe,Final
