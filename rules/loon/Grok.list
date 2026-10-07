@@ -1,0 +1,5 @@
+# Source: https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Grok.yaml
+# Rules: 3
+DOMAIN-SUFFIX,grok.com
+DOMAIN-SUFFIX,grok.x.com
+DOMAIN-SUFFIX,x.ai

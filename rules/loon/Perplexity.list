@@ -1,0 +1,6 @@
+# Source: https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Perplexity.yaml
+# Rules: 4
+DOMAIN-SUFFIX,perplexity.ai
+DOMAIN-SUFFIX,perplexity.com
+DOMAIN-SUFFIX,pplx.ai
+DOMAIN,pplx-res.cloudinary.com
