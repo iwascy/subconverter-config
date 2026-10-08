@@ -902,6 +902,7 @@ rules:
   - RULE-SET,Grok,Grok
   - RULE-SET,Perplexity,Perplexity
   - DOMAIN-SUFFIX,opencode.ai,AI
+  - DOMAIN-SUFFIX,muse.ai,AI
   - RULE-SET,AI,AI
   - RULE-SET,Games_CN,CN Direct
   - RULE-SET,Riot,Games
