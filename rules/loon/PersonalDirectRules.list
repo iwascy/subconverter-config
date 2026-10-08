@@ -1,8 +1,9 @@
 # Source: https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/Personal-Direct.yaml
-# Rules: 7
+# Rules: 8
 DOMAIN-SUFFIX,ai.cccy.fun
 DOMAIN-SUFFIX,sub2api.cccy.fun
 DOMAIN-SUFFIX,sub2api-proxy.cccy.fun
+DOMAIN-SUFFIX,cpa-proxy.cccy.fun
 DOMAIN-SUFFIX,crs-proxy.cccy.fun
 DOMAIN-SUFFIX,hapi.cccy.fun
 DOMAIN-SUFFIX,hapi-ha.cccy.fun

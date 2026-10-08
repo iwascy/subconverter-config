@@ -842,6 +842,7 @@ rule-providers:
     interval: 86400
 
 rules:
+  - DOMAIN,cpa-proxy.cccy.fun,DIRECT
   # Keep LAN and Chinese app APIs ahead of remote rules and proxy groups.
   - GEOIP,LAN,Global Direct,no-resolve
   # Android 包名兜底覆盖未收录域名和直连 IP，金融规则优先于 WeChat 等通用规则。
