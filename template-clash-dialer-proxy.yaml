@@ -1,3 +1,4 @@
+find-process-mode: strict
 # Local Clash config generated from macau.ini group/rule layout.
 # Fill the subscription placeholders before using.
 
@@ -314,7 +315,7 @@ proxy-groups:
       - Europe
       - DIRECT
 
-  - name: Longbridge
+  - name: 金融
     type: select
     proxies:
       - SELECT
@@ -323,6 +324,8 @@ proxy-groups:
       - Self-Hosted-US
       - Europe
       - DIRECT
+    use:
+      - ALL_PROVIDER
 
   - name: Personal
     type: select
@@ -399,6 +402,14 @@ rule-providers:
     behavior: classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WeChat/WeChat.yaml"
     path: ./ruleset/WeChat.yaml
+    interval: 86400
+
+  PikPak:
+    type: http
+    proxy: SELECT
+    behavior: classical
+    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/rules/PikPak.yaml"
+    path: ./ruleset/PikPak.yaml
     interval: 86400
 
   Streaming_Netflix:
@@ -481,6 +492,22 @@ rule-providers:
     path: ./ruleset/stripe.yaml
     interval: 86400
 
+  Binance:
+    type: http
+    proxy: SELECT
+    behavior: domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/binance.yaml"
+    path: ./ruleset/MetaCubeX-Binance.yaml
+    interval: 86400
+
+  Bybit:
+    type: http
+    proxy: SELECT
+    behavior: domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bybit.yaml"
+    path: ./ruleset/MetaCubeX-Bybit.yaml
+    interval: 86400
+
   Longbridge:
     type: http
     proxy: SELECT
@@ -493,23 +520,23 @@ rule-providers:
     type: http
     proxy: SELECT
     behavior: domain
-    url: "https://raw.githubusercontent.com/iwascy/subconverter-config/main/AI.yaml"
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.yaml"
     path: ./ruleset/AI.yaml
     interval: 86400
 
   Claude:
     type: http
     proxy: SELECT
-    behavior: classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
+    behavior: domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.yaml"
     path: ./ruleset/Claude.yaml
     interval: 86400
 
   Gemini:
     type: http
     proxy: SELECT
-    behavior: classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml"
+    behavior: domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.yaml"
     path: ./ruleset/Gemini.yaml
     interval: 86400
 
@@ -517,7 +544,7 @@ rule-providers:
     type: http
     proxy: SELECT
     behavior: domain
-    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/xai.yaml"
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xai.yaml"
     path: ./ruleset/xai.yaml
     interval: 86400
 
@@ -525,7 +552,7 @@ rule-providers:
     type: http
     proxy: SELECT
     behavior: domain
-    url: "https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/perplexity.yaml"
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/perplexity.yaml"
     path: ./ruleset/perplexity.yaml
     interval: 86400
 
@@ -815,8 +842,43 @@ rule-providers:
     interval: 86400
 
 rules:
+  # Keep LAN and Chinese app APIs ahead of remote rules and proxy groups.
+  - GEOIP,LAN,Global Direct,no-resolve
+  # Android 包名兜底覆盖未收录域名和直连 IP，金融规则优先于 WeChat 等通用规则。
+  - PROCESS-NAME,com.bybit.app,金融
+  - PROCESS-NAME,com.binance.dev,金融
+  - DOMAIN-SUFFIX,bybit.com,金融
+  - DOMAIN,api.wsot2022.com,金融
+  - DOMAIN-SUFFIX,binance.com,金融
+  - DOMAIN-SUFFIX,bsappapi.cc,金融
+  - RULE-SET,Longbridge,金融
+  - RULE-SET,Bybit,金融
+  - RULE-SET,Binance,金融
+  # Built-in rules still work when remote rule providers cannot update.
+  - DOMAIN-SUFFIX,xiaohongshu.com,DIRECT
+  - DOMAIN-SUFFIX,xhscdn.com,DIRECT
+  - DOMAIN-SUFFIX,xhscdn.net,DIRECT
+  - DOMAIN-SUFFIX,xhsrcdn.com,DIRECT
+  - DOMAIN-SUFFIX,xhslink.com,DIRECT
+  - DOMAIN-SUFFIX,douyin.com,DIRECT
+  - DOMAIN-SUFFIX,amemv.com,DIRECT
+  - DOMAIN-SUFFIX,snssdk.com,DIRECT
+  - DOMAIN-SUFFIX,iesdouyin.com,DIRECT
+  - DOMAIN-SUFFIX,douyincdn.com,DIRECT
+  - DOMAIN-SUFFIX,douyinpic.com,DIRECT
+  - DOMAIN-SUFFIX,douyinstatic.com,DIRECT
+  - DOMAIN-SUFFIX,douyinvod.com,DIRECT
+  - DOMAIN-SUFFIX,douyinliving.com,DIRECT
+  - DOMAIN-SUFFIX,douyinfe.com,DIRECT
+  - DOMAIN-SUFFIX,byteimg.com,DIRECT
+  - DOMAIN-SUFFIX,pstatp.com,DIRECT
+  - DOMAIN-SUFFIX,toutiaoapi.com,DIRECT
+  # PikPak domain rules must precede WeChat's broad Tencent ASN rule.
+  - DOMAIN-SUFFIX,mypikpak.com,PikPak
+  - DOMAIN-SUFFIX,pikpak.com,PikPak
+  - DOMAIN-SUFFIX,pikpak.io,PikPak
+  - RULE-SET,PikPak,PikPak
   - DST-PORT,22,DIRECT
-  - GEOIP,LAN,Global Direct
   - PROCESS-NAME,VALORANT-Win64-Shipping.exe,Games
   - PROCESS-NAME,RiotClientServices.exe,Games
   - PROCESS-NAME,vgc.exe,Games
@@ -834,12 +896,10 @@ rules:
   - RULE-SET,Cryptocurrency,Final
   - RULE-SET,PayPal,Final
   - RULE-SET,Stripe,Final
-  - RULE-SET,Longbridge,Longbridge
   - RULE-SET,Claude,Claude
   - RULE-SET,Gemini,Gemini
   - RULE-SET,Grok,Grok
   - RULE-SET,Perplexity,Perplexity
-  - RULE-SET,PikPak,PikPak
   - DOMAIN-SUFFIX,opencode.ai,AI
   - RULE-SET,AI,AI
   - RULE-SET,Games_CN,CN Direct

@@ -1,4 +1,6 @@
-# NAME: Grok
+# Source: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xai.yaml
+# Snapshot: 2026-10-08; runtime configurations use upstream directly.
 DOMAIN-SUFFIX,grok.com
-DOMAIN-SUFFIX,grok.ai
+DOMAIN-SUFFIX,grokipedia.com
 DOMAIN-SUFFIX,x.ai
+DOMAIN-SUFFIX,grok.x.com

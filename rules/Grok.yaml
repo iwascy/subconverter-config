@@ -1,8 +1,7 @@
-# Generated from https://github.com/v2fly/domain-list-community/tree/master/data/xai
-
-# Behavior: domain
-
+# Source: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xai.yaml
+# Snapshot: 2026-10-08; runtime configurations use upstream directly.
 payload:
-- "+.grok.com"
-- "+.grok.x.com"
-- "+.x.ai"
+  - DOMAIN-SUFFIX,grok.com
+  - DOMAIN-SUFFIX,grokipedia.com
+  - DOMAIN-SUFFIX,x.ai
+  - DOMAIN-SUFFIX,grok.x.com

@@ -116,7 +116,7 @@ test("every selectable routing group offers Europe", () => {
     "Social Media",
     "Media",
     "Scholar",
-    "Longbridge",
+    "金融",
     "Personal",
     "Personal-Direct",
     "CN Direct",
@@ -226,4 +226,36 @@ test("full migration covers every Sub-Store subscription", () => {
   assert.doesNotMatch(migration, /"now": "(?:EXIT|TRANSIT)-/);
   assert.match(migration, /Canonical metadata filter/);
   assert.equal(airportMappings.length, 4);
+});
+
+
+test("AI providers use MetaCubeX domain format and correct provider boundaries", () => {
+  const mapping = { AI: "category-ai-!cn", Claude: "anthropic", Gemini: "google-gemini", Grok: "xai", Perplexity: "perplexity" };
+  for (const filename of ["template-clash-dialer-proxy.yaml", "local-clash-dialer-proxy.yaml", "local-clash-public.yaml", "local-clash-single-remote.yaml"]) {
+    if (!fs.existsSync(path.join(root, filename))) continue;
+    const source = fs.readFileSync(path.join(root, filename), "utf8");
+    const blocks = [...source.matchAll(/^  (\w+):\n(?:(?: {4}[^\n]*|)\n)*/gm)];
+    for (const [block, group] of blocks) {
+      if (mapping[group]) {
+        assert.ok(block.includes(`/geo/geosite/${mapping[group]}.yaml`), `${filename}: ${group}`);
+        assert.match(block, /^    behavior: domain$/m);
+      } else {
+        assert.ok(!/geo\/geosite\/(category-ai-!cn|anthropic|google-gemini|xai|perplexity)\.yaml/.test(block), `${filename}: AI source leaked into ${group}`);
+      }
+    }
+    assert.ok(source.indexOf("RULE-SET,Perplexity,Perplexity") < source.indexOf("RULE-SET,AI,AI"));
+  }
+  for (const filename of ["config.ini", "macau.ini", "relay.ini"]) {
+    const source = fs.readFileSync(path.join(root, filename), "utf8");
+    for (const [group, name] of Object.entries(mapping)) {
+      assert.ok(source.includes(`ruleset=${group},clash-domain:https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/${name}.yaml,86400`), `${filename}: ${group}`);
+    }
+  }
+  for (const filename of ["template-loon-dialer-proxy.conf", "local-loon-dialer-proxy.ini"]) {
+    if (!fs.existsSync(path.join(root, filename))) continue;
+    const source = fs.readFileSync(path.join(root, filename), "utf8");
+    for (const [group, name] of Object.entries(mapping)) {
+      assert.ok(source.includes(`/geo/geosite/${name}.yaml, policy=${group}, tag=${group}, enabled=true, type=domain`), `${filename}: ${group}`);
+    }
+  }
 });
