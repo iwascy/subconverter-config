@@ -4,3 +4,4 @@ local-clash-single-remote.yaml
 local-loon-dialer-proxy.conf
 local-loon-dialer-proxy.ini
 clash-dialer-proxy.yaml
+__pycache__/

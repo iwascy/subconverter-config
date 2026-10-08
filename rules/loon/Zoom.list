@@ -1,0 +1,5 @@
+# Source: https://raw.githubusercontent.com/zsfyi/V2rayDomains2Clash/generated/zoom.yaml
+# Rules: 3
+DOMAIN-SUFFIX,zoom.com
+DOMAIN-SUFFIX,zoom.com.cn
+DOMAIN-SUFFIX,zoom.us

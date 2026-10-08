@@ -255,7 +255,8 @@ test("AI providers use MetaCubeX domain format and correct provider boundaries",
     if (!fs.existsSync(path.join(root, filename))) continue;
     const source = fs.readFileSync(path.join(root, filename), "utf8");
     for (const [group, name] of Object.entries(mapping)) {
-      assert.ok(source.includes(`/geo/geosite/${name}.yaml, policy=${group}, tag=${group}, enabled=true, type=domain`), `${filename}: ${group}`);
+      assert.ok(source.includes(`/geo/geosite/${name}.yaml`), `${filename}: ${group} source`);
+      assert.ok(source.includes(`/rules/loon/${group}.list, policy=${group}, tag=${group}, enabled=true`), `${filename}: ${group}`);
     }
   }
 });
