@@ -842,6 +842,8 @@ rule-providers:
     interval: 86400
 
 rules:
+  - AND,((DOMAIN,play.googleapis.com),(PROCESS-NAME,language_server.exe)),REJECT
+  - AND,((DOMAIN,play.googleapis.com),(PROCESS-NAME,agy.exe)),REJECT
   - DOMAIN,cpa-proxy.cccy.fun,DIRECT
   - DOMAIN,magpie.cccy.fun,DIRECT
   # Keep LAN and Chinese app APIs ahead of remote rules and proxy groups.
